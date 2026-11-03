@@ -1,0 +1,1312 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guía de Jizai</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Manrope:wght@400;600;700;800&display=swap">
+<style>
+/* Guía de usuario de Jizai, para quien prueba la app. Mismo estilo que el feature map y el brandbook:
+   hueso de fondo, papel blanco para las tarjetas, Archivo Black para títulos, Manrope para el texto,
+   y la línea a mano en naranja que señala (nunca enmarca). Colores planos. */
+:root {
+  --bg: #F4EFE6; --surface: #FBF8F2; --fg: #231a22; --muted: #6d6168; --line: #e2d8cb; --wire: #6d5f63;
+  --root-bg: #0E0E0E; --root-fg: #F4EFE6;
+  --brezo: #6B3E6E; --ocre: #D9A441; --musgo: #2E4B3F; --dot: #FF5A1F; --grey: #7a7178; --melocoton: #FFB48C;
+  /* Estética del puente simple: cielo cálido con destellos de color, tarjetas de vidrio */
+  --sky-a: #FBF6EE; --sky-b: #EFE3D6;
+  --glow-1: rgba(255,90,31,0.26); --glow-2: rgba(107,62,110,0.30); --glow-3: rgba(217,164,65,0.20);
+  --glass-a: rgba(255,255,255,0.86); --glass-b: rgba(255,255,255,0.58); --glass-line: rgba(255,255,255,0.9);
+  --glass-hi: rgba(255,255,255,0.95); --glass-shadow: rgba(76,40,80,0.22);
+  --display: "Archivo Black", "Arial Black", Impact, sans-serif;
+  --text: "Manrope", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1a1418; --surface: #241c22; --fg: #efe7dc; --muted: #ab9fa6; --line: #3a2f37; --wire: #8d7f8a;
+    --root-bg: #F4EFE6; --root-fg: #0E0E0E;
+    --sky-a: #1a1418; --sky-b: #120e11;
+    --glow-1: rgba(255,90,31,0.16); --glow-2: rgba(207,159,209,0.14); --glow-3: rgba(224,179,90,0.10);
+    --glass-a: rgba(36,28,34,0.86); --glass-b: rgba(36,28,34,0.6); --glass-line: rgba(255,255,255,0.08);
+    --glass-hi: rgba(255,255,255,0.06); --glass-shadow: rgba(0,0,0,0.5);
+    --brezo: #cf9fd1; --ocre: #e0b35a; --musgo: #7fb59a; --dot: #ff7a45; --grey: #9a9098; --melocoton: #FFB48C;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1a1418; --surface: #241c22; --fg: #efe7dc; --muted: #ab9fa6; --line: #3a2f37; --wire: #8d7f8a;
+  --root-bg: #F4EFE6; --root-fg: #0E0E0E;
+  --sky-a: #1a1418; --sky-b: #120e11;
+  --glow-1: rgba(255,90,31,0.16); --glow-2: rgba(207,159,209,0.14); --glow-3: rgba(224,179,90,0.10);
+  --glass-a: rgba(36,28,34,0.86); --glass-b: rgba(36,28,34,0.6); --glass-line: rgba(255,255,255,0.08);
+  --glass-hi: rgba(255,255,255,0.06); --glass-shadow: rgba(0,0,0,0.5);
+  --brezo: #cf9fd1; --ocre: #e0b35a; --musgo: #7fb59a; --dot: #ff7a45; --grey: #9a9098; --melocoton: #FFB48C;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; color: var(--fg); min-height: 100%;
+  background:
+    radial-gradient(60% 55% at 92% 8%, var(--glow-1) 0%, transparent 70%),
+    radial-gradient(55% 60% at 4% 96%, var(--glow-2) 0%, transparent 70%),
+    radial-gradient(45% 45% at 55% 50%, var(--glow-3) 0%, transparent 70%),
+    linear-gradient(170deg, var(--sky-a) 0%, var(--bg) 55%, var(--sky-b) 100%) fixed; font-family: var(--text); font-size: 16px; line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+a { color: inherit; }
+h1, h2 { font-family: var(--display); font-weight: 400; line-height: 1.02; margin: 0; text-wrap: balance; }
+h1 { font-size: clamp(2.4rem, 8vw, 4.4rem); text-transform: uppercase; }
+h2 { font-size: clamp(1.5rem, 4vw, 2rem); }
+h3 { font: 800 0.78rem var(--text); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin: 0 0 10px; }
+p { margin: 0; color: var(--muted); max-width: 66ch; }
+p strong, li strong { color: var(--fg); }
+ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+li { color: var(--muted); padding-left: 16px; position: relative; max-width: 66ch; }
+li::before { content: ""; position: absolute; left: 0; top: 0.62em; width: 7px; height: 7px; border-radius: 50%; background: var(--grey); }
+
+.wrap { max-width: 980px; margin: 0 auto; padding: 36px 0 72px; display: grid; gap: 56px; }
+section { display: grid; gap: 18px; scroll-margin-top: 16px; }
+
+/* Cabecera: la burbuja inclinada de la marca, sobre brezo */
+.hero {
+  border-radius: 32px 72px 32px 32px; padding: 32px 26px 30px; display: grid; gap: 14px; position: relative; overflow: hidden;
+  background:
+    radial-gradient(90% 60% at 85% 0%, rgba(255,180,107,0.55) 0%, transparent 60%),
+    radial-gradient(70% 50% at 0% 100%, rgba(255,90,31,0.30) 0%, transparent 65%),
+    linear-gradient(165deg, #2C1630 0%, #6B3E6E 55%, #A8729E 100%);
+  box-shadow: 0 24px 60px rgba(44,22,48,0.30);
+}
+.hero .under { width: 230px; height: 16px; overflow: visible; display: block; margin-top: -4px; }
+.hero .under path { fill: none; stroke: var(--melocoton); stroke-width: 5; stroke-linecap: round; }
+.hero > svg:first-child { width: min(300px, 100%); height: auto; display: block; margin: -14px 0 -6px -6px; }
+.hero p { color: #fff; opacity: 0.92; max-width: 56ch; }
+.hero h1 { color: #fff; }
+.hero h1 span { color: var(--melocoton); }
+
+/* Selector de idioma: cada opción se escribe en su propio idioma */
+.lang { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: -30px; }
+.lang span { font: 800 11px var(--text); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-right: 4px; }
+.lang button {
+  font: inherit; font-size: 13px; font-weight: 700; color: var(--fg); background: var(--glass-a); border: 1px solid var(--glass-line);
+  border-radius: 999px; padding: 6px 12px; cursor: pointer;
+}
+.lang button[aria-pressed="true"] { background: var(--fg); color: var(--bg); }
+.lang button:focus-visible { outline: 2px solid var(--dot); outline-offset: 2px; }
+
+/* Empezar: tres pasos numerados */
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; }
+.step { border-radius: 28px; padding: 22px; display: grid; gap: 10px; align-content: start; background: linear-gradient(135deg, var(--glass-a), var(--glass-b)); -webkit-backdrop-filter: blur(22px) saturate(1.4); backdrop-filter: blur(22px) saturate(1.4); border: 1px solid var(--glass-line); box-shadow: inset 0 1px 0 var(--glass-hi), 0 24px 60px -24px var(--glass-shadow); }
+/* el número va dentro de un círculo dibujado a boli, como en el puente simple */
+.step .num { position: relative; width: 38px; height: 38px; display: grid; place-items: center; font-family: var(--display); font-size: 18px; color: var(--fg); }
+.step .num .ring { position: absolute; inset: -4px; width: calc(100% + 8px); height: calc(100% + 8px); overflow: visible; pointer-events: none; }
+.step .num .ring path { fill: none; stroke: var(--dot); stroke-width: 2.5; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.step h2 { font-size: 1.25rem; line-height: 1.1; }
+.step .where { font-size: 13px; font-weight: 700; color: var(--fg); }
+.step .where b { color: var(--dot); }
+
+/* Rutina: el ritmo de uso, cuatro tarjetas con su tiempo, de dos en dos (una columna en el móvil) */
+.steps.rutina { grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); }
+.step .time { font: 800 11px var(--text); letter-spacing: 0.12em; text-transform: uppercase; color: var(--dot); }
+.rut-list { display: grid; gap: 8px; }
+.rut-total { font-weight: 700; }
+
+/* Minimapa: Jizai, y sus cinco ramas. Cada rama enlaza con su sección. */
+.map { display: grid; gap: 18px; }
+.map-root {
+  justify-self: start; background: var(--root-bg); color: var(--root-fg); border-radius: 14px; padding: 16px 20px;
+  box-shadow: 0 18px 36px -18px rgba(0, 0, 0, .55);
+}
+.map-root b { font-family: var(--display); font-weight: 400; font-size: 34px; line-height: 1; display: block; }
+.map-root span { font-size: 13px; opacity: 0.85; }
+/* Las ramas van sin cajas ni líneas: una barra de color arriba y el texto debajo */
+.map-branches { display: grid; gap: 22px; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
+.branch { text-decoration: none; display: grid; gap: 6px; align-content: start; padding: 12px 0 0; border-top: 5px solid var(--c); border-radius: 2px; }
+.branch h2 { font-size: 1.05rem; line-height: 1.1; }
+.branch span { font-size: 13px; color: var(--muted); }
+.branch:hover h2 { color: var(--c); }
+.branch:focus-visible { outline: 2px solid var(--dot); outline-offset: 4px; }
+.branch.qv { border-top-style: dashed; border-top-width: 3px; }
+.branch.qv h2 { color: var(--muted); }
+.branch.qv small { display: inline-block; margin-top: 4px; font: 800 11px var(--text); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.b-prof { --c: var(--brezo); }
+.b-mus { --c: var(--ocre); }
+.b-proj { --c: var(--musgo); }
+.b-shared { --c: var(--wire); }
+.b-qv { --c: var(--grey); }
+
+/* Ramas: una sección por rama, con grupos de funciones */
+.branch-head { display: grid; gap: 6px; border-left: 6px solid var(--c); padding-left: 16px; }
+.branch-head p { max-width: 62ch; }
+.groups { display: grid; gap: 14px; }
+.group { border-radius: 28px; padding: 20px 22px; display: grid; gap: 10px; }
+.group { background: linear-gradient(135deg, var(--glass-a), var(--glass-b)); -webkit-backdrop-filter: blur(22px) saturate(1.4); backdrop-filter: blur(22px) saturate(1.4); border: 1px solid var(--glass-line); box-shadow: inset 0 1px 0 var(--glass-hi), 0 24px 60px -24px var(--glass-shadow); }
+.group h3 { color: var(--fg); margin: 0; font-size: 0.9rem; }
+.group h3 + p { margin-top: -4px; }
+.prof { --c: var(--brezo); }
+.mus { --c: var(--ocre); }
+.proj { --c: var(--musgo); }
+.shared { --c: var(--wire); }
+.group li::before { background: var(--c); }
+.t-auto { display: inline-block; margin-left: 6px; padding: 1px 8px 1px 6px; border-radius: 999px; font: 600 11px var(--text); color: var(--fg); border: 1px solid color-mix(in srgb, var(--ocre) 70%, transparent); background: color-mix(in srgb, var(--ocre) 18%, transparent); white-space: nowrap; }
+.t-auto::before { content: ""; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--ocre); margin-right: 6px; vertical-align: 1px; }
+
+/* La línea a mano que señala, como en el brandbook */
+.hand-mark { display: block; width: 100%; height: 18px; overflow: visible; }
+.hand-mark path { fill: none; stroke: var(--dot); stroke-width: 3; stroke-linecap: round; }
+
+.ask { border-radius: 28px; padding: 20px 22px; display: grid; gap: 6px; }
+.ask { background: linear-gradient(135deg, var(--glass-a), var(--glass-b)); -webkit-backdrop-filter: blur(22px) saturate(1.4); backdrop-filter: blur(22px) saturate(1.4); border: 1px solid var(--glass-line); box-shadow: inset 0 1px 0 var(--glass-hi), 0 24px 60px -24px var(--glass-shadow); }
+.ask strong { color: var(--fg); }
+
+footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 18px; }
+
+/* Ordenador ancho: las cinco ramas en una sola fila */
+@media (min-width: 900px) {
+  .map-branches { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+}
+@media (max-width: 700px) {
+  .wrap { padding-top: 20px; gap: 44px; }
+  .lang { margin-top: -36px; }
+  .map-branches { grid-template-columns: 1fr; gap: 16px; }
+  .branch { border-top: 0; border-left: 5px solid var(--c); padding: 2px 0 2px 14px; }
+  .branch.qv { border-left-style: dashed; border-left-width: 3px; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="trazo-a-mano" x="-5%" y="-30%" width="110%" height="160%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="2" seed="7" result="ruido"/>
+      <feDisplacementMap in="SourceGraphic" in2="ruido" scale="4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+</svg>
+
+<div class="wrap">
+
+  <!-- CABECERA -->
+  <header class="hero">
+    <svg viewBox="0 0 520 200" role="img" aria-label="jizai en burbuja blanca inclinada con contorno negro">
+      <text x="260" y="142" text-anchor="middle" font-family="Archivo Black, Arial Black, sans-serif" font-size="128" fill="#FFFFFF" stroke="#0E0E0E" stroke-width="20" paint-order="stroke" transform="rotate(-6 260 110)">jizai</text>
+    </svg>
+    <div>
+      <h1 data-i18n="h_title">Guía de <span>Jizai</span></h1>
+      <svg class="under" aria-hidden="true" viewBox="0 0 300 30" preserveAspectRatio="none"><path d="M4 18 C60 8 120 26 180 14 S270 10 296 16" filter="url(#trazo-a-mano)"/></svg>
+    </div>
+    <p data-i18n="h_lead">Para quien prueba la app. Aquí está lo que ya funciona, qué hace cada parte y cómo empezar. El mapa de abajo te enseña dónde está cada cosa.</p>
+  </header>
+
+  <!-- IDIOMA -->
+  <nav class="lang" aria-label="Idioma">
+    <span data-i18n="lang_label">Idioma</span>
+    <button type="button" data-lang-btn="es" aria-pressed="true">Español</button>
+    <button type="button" data-lang-btn="en" aria-pressed="false">English</button>
+    <button type="button" data-lang-btn="nl" aria-pressed="false">Nederlands</button>
+    <button type="button" data-lang-btn="it" aria-pressed="false">Italiano</button>
+  </nav>
+
+  <!-- ENTRAR -->
+  <section id="entrar">
+    <h3 data-i18n="ent_kicker">Antes de empezar</h3>
+    <h2 data-i18n="ent_h2">Entrar en la app</h2>
+    <div class="group">
+        <ul class="shared">
+          <li data-i18n="ent_1">Entras con tu correo: te llega un enlace de acceso. No hay contraseña.</li>
+          <li data-i18n="ent_2">Solo entran los correos de la lista de invitados. Si no te llega el enlace, escríbeme.</li>
+          <li data-i18n="ent_3">Para probar iDEAL: en <strong>Ajustes → Facturación</strong> pega tu clave de prueba de Mollie (la que empieza por <strong>test_</strong>).</li>
+        </ul>
+      </div>
+  </section>
+
+  <!-- EMPEZAR -->
+  <section id="empezar">
+    <h3 data-i18n="s_kicker">Primeros pasos</h3>
+    <h2 data-i18n="s_h2">Empieza en tres pasos</h2>
+    <p data-i18n="s_p">Con estos tres pasos tienes el ciclo entero: un alumno, sus clases del mes y la factura enviada.</p>
+    <div class="steps">
+      <article class="step">
+        <span class="num">1<svg class="ring" aria-hidden="true" viewBox="0 0 200 80" preserveAspectRatio="none"><path d="M30 12 C90 -4 190 6 194 38 C198 70 110 82 50 74 C6 68 2 40 14 24 C24 12 60 6 96 8" filter="url(#trazo-a-mano)"/></svg></span>
+        <h2 data-i18n="st1_h">Crear un alumno</h2>
+        <p class="where" data-i18n="st1_where">Alumnos → <b>Nuevo alumno</b></p>
+        <p data-i18n="st1_p1">Pon su nombre, su fecha de nacimiento y su curso. Si lo paga un padre o una madre, crea ese cliente y enlaza al alumno con él. Así la factura va a quien paga.</p>
+        <p data-i18n="st1_p2">Después dale su <strong>horario fijo</strong> y su paquete (de la sede donde da clase).</p>
+      </article>
+      <article class="step">
+        <span class="num">2<svg class="ring" aria-hidden="true" viewBox="0 0 200 80" preserveAspectRatio="none"><path d="M30 12 C90 -4 190 6 194 38 C198 70 110 82 50 74 C6 68 2 40 14 24 C24 12 60 6 96 8" filter="url(#trazo-a-mano)"/></svg></span>
+        <h2 data-i18n="st2_h">Generar las clases del mes</h2>
+        <p class="where" data-i18n="st2_where">Agenda → <b>Generar clases</b></p>
+        <p data-i18n="st2_p1">Con el horario fijo ya puesto, un botón crea las clases de la semana o del mes. Los días cerrados (vacaciones y festivos de tu temporada) se saltan solos.</p>
+        <p data-i18n="st2_p2">Si algo cambia, muévela, márcala como ausencia o recupérala desde la agenda.</p>
+      </article>
+      <article class="step">
+        <span class="num">3<svg class="ring" aria-hidden="true" viewBox="0 0 200 80" preserveAspectRatio="none"><path d="M30 12 C90 -4 190 6 194 38 C198 70 110 82 50 74 C6 68 2 40 14 24 C24 12 60 6 96 8" filter="url(#trazo-a-mano)"/></svg></span>
+        <h2 data-i18n="st3_h">Facturar y enviar</h2>
+        <p class="where" data-i18n="st3_where">Facturas → <b>Crear borrador de factura</b></p>
+        <p data-i18n="st3_p1">La app saca el mes del horario con un clic: una factura por pagador, con el IVA de cada línea. Revisa el borrador.</p>
+        <p data-i18n="st3_p2">Envíala por correo desde la factura con <strong>Enviar por email</strong>. Si la factura no se paga a tiempo, la app puede enviar recordatorios.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- RUTINA: la forma práctica de usarla, con el tiempo de cada cosa -->
+  <section id="rutina">
+    <h3 data-i18n="rut_kicker">Tu rutina</h3>
+    <h2 data-i18n="rut_h2">Media hora al mes</h2>
+    <p data-i18n="rut_p">No hace falta saber contabilidad. Con este ritmo, la administración te lleva unos 30 minutos al mes y nada se queda a medias.</p>
+    <div class="steps rutina">
+      <article class="step">
+        <p class="time" data-i18n="rut1_time">Cada gasto · 10 segundos</p>
+        <h2 data-i18n="rut1_h">Foto del ticket</h2>
+        <p class="where" data-i18n="rut1_where">Móvil → <b>+</b> → <b>Gasto</b></p>
+        <p data-i18n="rut1_p">Cuando pagas algo del trabajo, haz la foto del ticket en el momento. La app lo lee y lo guarda con su IVA. Nada de guardar papeles hasta final de trimestre.</p>
+      </article>
+      <article class="step">
+        <p class="time" data-i18n="rut2_time">Cada semana · 2 minutos</p>
+        <h2 data-i18n="rut2_h">La semana al día</h2>
+        <p class="where" data-i18n="rut2_where">Agenda → <b>Generar clases</b></p>
+        <p data-i18n="rut2_p">Mira el horario fijo: un alumno nuevo, uno que lo deja, un cambio de hora. Después genera las clases. Durante la semana solo marcas lo raro: ausencias y recuperaciones.</p>
+      </article>
+      <article class="step">
+        <p class="time" data-i18n="rut3_time">Una vez al mes · 15 minutos</p>
+        <h2 data-i18n="rut3_h">El día de facturar</h2>
+        <p class="where" data-i18n="rut3_where">Finanzas → <b>Banco y Mollie</b>, y Facturas</p>
+        <ul class="rut-list">
+          <li data-i18n="rut3_1"><strong>Sube el CSV del banco.</strong> Cada cobro se casa con su factura, que queda pagada con la fecha real, y cada pago con su gasto. Lo seguro se confirma de un clic; solo revisas lo que no encaja.</li>
+          <li data-i18n="rut3_2"><strong>Facturar el mes.</strong> Un clic saca un borrador por pagador con las clases del mes. Échales un vistazo.</li>
+          <li data-i18n="rut3_3"><strong>Envíalos todos.</strong> Selecciónalos en Facturas y mándalos por email a la vez.</li>
+          <li data-i18n="rut3_4"><strong>Las que no han pagado:</strong> filtra por «Vencidas» y pulsa «Enviar recordatorio» para todas.</li>
+        </ul>
+      </article>
+      <article class="step">
+        <p class="time" data-i18n="rut4_time">Cada trimestre y cada año</p>
+        <h2 data-i18n="rut4_h">Impuestos sin sustos</h2>
+        <p class="where" data-i18n="rut4_where">Finanzas → <b>BTW trimestral</b> · <b>Declaración anual</b></p>
+        <p data-i18n="rut4_p">Como todo está al día, la declaración de BTW ya está hecha: solo copias las casillas en la web de la Belastingdienst. Una vez al año, la declaración anual junta las cifras del año.</p>
+      </article>
+    </div>
+    <p class="rut-total" data-i18n="rut_total">En total: unos 25 minutos al mes, más las fotos de los tickets. Lo que te ahorras es mirar la app del banco y marcar factura por factura a mano.</p>
+  </section>
+
+  <!-- PROBAR -->
+  <section id="probar">
+    <h3 data-i18n="probar_kicker">Por dónde empezar</h3>
+    <h2 data-i18n="probar_h2">Qué probar primero</h2>
+    <div class="group">
+        <ul class="prof">
+          <li data-i18n="probar_1">Crea un alumno con su horario fijo.</li>
+          <li data-i18n="probar_2">Genera las clases del mes y mueve una.</li>
+          <li data-i18n="probar_3">Crea la factura del mes y pon tu propio correo como pagador para recibirla.</li>
+          <li data-i18n="probar_4">Mira el portal de familias: qué ve una familia de sus clases y facturas.</li>
+          <li data-i18n="probar_5">Cronometra una hora en el móvil.</li>
+          <li data-i18n="probar_6">Pega un mensaje con un concierto y revisa lo que la app entiende.</li>
+          <li data-i18n="probar_7">Haz una factura de abono de una factura de prueba.</li>
+        </ul>
+      </div>
+  </section>
+
+  <!-- MINIMAPA -->
+  <section id="mapa">
+    <h3 data-i18n="m_kicker">Dónde está cada cosa</h3>
+    <h2 data-i18n="m_h2">El minimapa</h2>
+    <svg class="hand-mark" viewBox="0 0 600 18" preserveAspectRatio="none" aria-hidden="true" filter="url(#trazo-a-mano)"><path d="M4 11 C120 3 260 15 380 8 S560 6 596 10"/></svg>
+    <p data-i18n="m_p">Jizai tiene cinco ramas. Pulsa una para bajar a su sección.</p>
+    <div class="map">
+      <div class="map-root"><b>Jizai</b><span data-i18n="m_root_span">la app de una persona que vive de la música</span></div>
+      <nav class="map-branches" aria-label="Ramas de Jizai" data-i18n-aria="m_nav_aria">
+        <div class="branch b-qv qv"><h2 data-i18n="b_qv">Qué ves</h2><span data-i18n="qv_span">Elegir qué ramas ves: Profesores, Músicos o las dos.</span><small data-i18n="qv_small">Llegará más adelante</small></div>
+        <a class="branch b-prof" href="#profesores"><h2 data-i18n="b_prof">Profesores</h2><span data-i18n="br_prof_span">Alumnos, agenda, clases, facturas y los portales de escuelas y familias.</span></a>
+        <a class="branch b-mus" href="#musicos"><h2 data-i18n="b_mus">Músicos</h2><span data-i18n="br_mus_span">Conciertos y ensayos, con su precio y su factura; y tus horas trabajadas.</span></a>
+        <a class="branch b-proj" href="#proyectos"><h2 data-i18n="b_proj">Proyectos y freelancing</h2><span data-i18n="br_proj_span">Encargos por horas, precio cerrado o internos; facturas sueltas y gastos.</span></a>
+        <a class="branch b-shared" href="#compartido"><h2 data-i18n="b_shared">Compartido</h2><span data-i18n="br_shared_span">Clientes, kilómetros, BTW, cobros, correos y ajustes.</span></a>
+      </nav>
+    </div>
+  </section>
+
+  <!-- PROFESORES -->
+  <section id="profesores">
+    <div class="branch-head prof">
+      <h3 data-i18n="rama1">Rama 1</h3>
+      <h2 data-i18n="b_prof">Profesores</h2>
+      <p data-i18n="prof_p">Tus clases con alumnos de varias escuelas y familias: cuándo das clase, dónde, qué se factura y quién lo recibe.</p>
+    </div>
+    <div class="groups">
+      <div class="group">
+        <h3 data-i18n="g_agenda">Agenda y clases</h3>
+        <ul class="prof">
+          <li data-i18n="a1"><strong>Horario fijo</strong>: el horario semanal del alumno. Genera sus clases solas <span class="t-auto">Automatiza</span></li>
+          <li data-i18n="a2">Mover una clase, marcar una <strong>ausencia</strong> o hacer una <strong>recuperación</strong></li>
+          <li data-i18n="a3">Generar las clases de la semana o del mes con un botón <span class="t-auto">Automatiza</span></li>
+          <li data-i18n="a4"><strong>Temporadas</strong> (cursos) con sus fechas. La generación salta vacaciones y festivos <span class="t-auto">Automatiza</span></li>
+          <li data-i18n="a5">Cada clase tiene su estado: <strong>dada</strong>, <strong>no-show</strong>, cancelada por el alumno o cancelada por ti. Puedes escribir una nota de asistencia</li>
+          <li data-i18n="a6"><strong>Sedes</strong>: una escuela (con su portal) o una clase privada. Cada <strong>paquete</strong> pertenece a una sede</li>
+          <li data-i18n="a7"><strong>Citas sueltas</strong>, huecos que se ofrecen en la reserva y bloques ocupados de tu calendario</li>
+          <li data-i18n="a8"><strong>Reserva pública</strong>: las familias nuevas reservan su prueba o una reunión, y rellenan sus datos solas <span class="t-auto">Automatiza</span></li>
+        </ul>
+      </div>
+      <div class="group">
+        <h3 data-i18n="g_fact">Facturación de clases</h3>
+        <ul class="prof">
+          <li data-i18n="f1"><strong>Generar el mes desde el horario</strong>: todo el mes sale con un clic <span class="t-auto">Automatiza</span></li>
+          <li data-i18n="f2"><strong>Facturas</strong>: una factura por pagador, con el IVA de cada línea (y por edad, si el alumno lo tiene así). También puedes hacer <strong>facturas de abono</strong> para anular una</li>
+          <li data-i18n="f3"><strong>Envío</strong>: con un clic salen todas las facturas preparadas a la vez. Cada una va con su correo personalizado, su enlace de pago y su PDF <span class="t-auto">Automatiza</span></li>
+          <li data-i18n="f4"><strong>Recordatorios</strong> de facturas vencidas</li>
+          <li data-i18n="f5"><strong>Pago con iDEAL</strong> desde el enlace de la factura, con Mollie activado</li>
+        </ul>
+      </div>
+      <div class="group">
+        <h3 data-i18n="g_school">Portal de escuelas</h3>
+        <p data-i18n="sc_p">Para las escuelas con las que trabajas. Dos partes: lo que llega de la escuela y lo que la escuela ve.</p>
+        <ul class="prof">
+          <li data-i18n="sc1">La escuela manda un alumno. Tú lo <strong>aceptas o lo rechazas</strong></li>
+          <li data-i18n="sc2">La escuela ve sus profes conectados, con su sede</li>
+          <li data-i18n="sc3">Ve las <strong>clases dadas por mes y por alumno</strong>, sin tener que pedirte listados <span class="t-auto">Automatiza</span></li>
+          <li data-i18n="sc4">Ve qué clases ya están facturadas</li>
+          <li data-i18n="sc5">Invitas a los coordinadores de la escuela por email</li>
+        </ul>
+      </div>
+      <div class="group">
+        <h3 data-i18n="g_family">Portal de familias</h3>
+        <p data-i18n="fa_p">Para las familias de tus alumnos. Dos partes: las clases del alumno y sus facturas.</p>
+        <ul class="prof">
+          <li data-i18n="fa1">Ven las <strong>clases hechas</strong>, con tu nota, y las <strong>próximas</strong> con su horario</li>
+          <li data-i18n="fa2">La familia avisa de sus <strong>ausencias</strong></li>
+          <li data-i18n="fa3">Las clases van a su propio calendario</li>
+          <li data-i18n="fa4">Ven sus <strong>facturas</strong> y su estado, y pueden pagar con iDEAL desde la factura</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- MÚSICOS -->
+  <section id="musicos">
+    <div class="branch-head mus">
+      <h3 data-i18n="rama2">Rama 2</h3>
+      <h2 data-i18n="b_mus">Músicos</h2>
+      <p data-i18n="mus_p">Lo que tocas y cuánto cobras, para cuando trabajas como músico y no como profesor.</p>
+    </div>
+    <div class="groups">
+      <div class="group">
+        <h3 data-i18n="g_conc">Conciertos y ensayos</h3>
+        <p data-i18n="conc_p">Lo más importante para ti como músico. Cada concierto y cada ensayo cuelga de un proyecto de Proyectos.</p>
+        <ul class="mus">
+          <li data-i18n="c1"><strong>Conciertos</strong>: fechas y bolos, con el <strong>cachet y el viaje</strong> (el viaje con 9 % de BTW). Puedes importar los bolos desde una hoja</li>
+          <li data-i18n="c2"><strong>Ensayos</strong>: cada uno con su precio. Si un ensayo va incluido en el concierto, pon 0 €</li>
+          <li data-i18n="c3"><strong>Importar desde un mensaje</strong>: pegas un email, un WhatsApp o una captura, y la app lee los conciertos y ensayos con su fecha, hora y lugar <span class="t-auto">Automatiza</span></li>
+          <li data-i18n="c4">La app enlaza lo que importas al proyecto del cliente, o crea el cliente con sus precios. <strong>Revisas las fechas antes de guardar</strong></li>
+          <li data-i18n="c5"><strong>Factura del proyecto</strong>: conciertos, ensayos y kilómetros en una sola factura, al final del mes o del proyecto <span class="t-auto">Automatiza</span></li>
+        </ul>
+      </div>
+      <div class="group">
+        <h3 data-i18n="g_hours">Horas trabajadas</h3>
+        <ul class="mus">
+          <li data-i18n="h1"><strong>Cronómetro en el móvil</strong>: lo pones al empezar y lo paras al acabar</li>
+          <li data-i18n="h2">Apuntar <strong>horas sueltas</strong> y <strong>citas</strong> a mano, si no las has cronometrado</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROYECTOS Y FREELANCING -->
+  <section id="proyectos">
+    <div class="branch-head proj">
+      <h3 data-i18n="rama3">Rama 3</h3>
+      <h2 data-i18n="b_proj">Proyectos y freelancing</h2>
+      <p data-i18n="proj_p">Encargos que no son clases ni conciertos. Cada proyecto tiene su forma de cobro. Los conciertos y ensayos de Músicos cuelgan de aquí.</p>
+    </div>
+    <div class="groups">
+      <div class="group">
+        <h3 data-i18n="g_pcobro">Proyectos: cómo se cobra</h3>
+        <ul class="proj">
+          <li data-i18n="p1"><strong>Por horas</strong>: cada hora trabajada se factura</li>
+          <li data-i18n="p2"><strong>Precio cerrado</strong>: un precio para todo el encargo</li>
+          <li data-i18n="p3"><strong>Presupuesto de horas</strong>: un número de horas acordado</li>
+          <li data-i18n="p4"><strong>Interno, sin cliente</strong>: trabajo para ti, sin factura a nadie</li>
+        </ul>
+      </div>
+      <div class="group">
+        <h3 data-i18n="g_sueltas">Facturas sueltas y gastos</h3>
+        <ul class="proj">
+          <li data-i18n="s1">Una <strong>factura de proyecto</strong> o una <strong>factura de abono</strong>, sin pasar por el horario</li>
+          <li data-i18n="s2"><strong>Gastos</strong>: haz una foto del recibo y la app lee los datos por ti</li>
+          <li data-i18n="s3"><strong>Extracto del banco</strong> para ver lo que has pagado</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARTIDO -->
+  <section id="compartido">
+    <div class="branch-head shared">
+      <h3 data-i18n="rama4">Rama 4</h3>
+      <h2 data-i18n="b_shared">Compartido</h2>
+      <p data-i18n="sh_p">Lo que usan las dos partes: clientes, kilómetros, BTW, cobros, correos y ajustes.</p>
+    </div>
+    <div class="groups">
+      <div class="group">
+        <h3 data-i18n="g_crm">Clientes (CRM)</h3>
+        <p data-i18n="crm_p">Todos son clientes: quién paga.</p>
+        <ul class="shared">
+          <li data-i18n="crm1"><strong>Con alumnos</strong>: el padre o la madre que paga, con uno o más alumnos enlazados. Del alumno: nombre, fecha de nacimiento y curso. Y cómo se organizan sus clases (horario y paquete)</li>
+          <li data-i18n="crm2"><strong>De proyectos</strong>: la empresa o persona que te encarga, con sus proyectos y sus datos de factura: dirección, IVA y número de BTW</li>
+        </ul>
+      </div>
+      <div class="group">
+        <h3 data-i18n="g_km">Kilómetros</h3>
+        <ul class="shared">
+          <li data-i18n="km1">Los viajes de las clases salen de la agenda</li>
+          <li data-i18n="km2">Los viajes de los conciertos salen de las horas</li>
+          <li data-i18n="km3">Se pueden sumar a la factura de un proyecto</li>
+        </ul>
+      </div>
+      <div class="group">
+        <h3 data-i18n="g_fin">Finanzas y BTW</h3>
+        <ul class="shared">
+          <li data-i18n="fin1">La <strong>aangifte</strong> (declaración de BTW) de cada trimestre</li>
+          <li data-i18n="fin2">Las cifras del año y los <strong>cobros pendientes</strong></li>
+        </ul>
+      </div>
+      <div class="group">
+        <h3 data-i18n="g_cobros">Cobros</h3>
+        <ul class="shared">
+          <li data-i18n="cob1">Pago con <strong>iDEAL</strong>, con Mollie. Se activa en Mollie y funciona también en su modo de prueba</li>
+        </ul>
+      </div>
+      <div class="group">
+        <h3 data-i18n="g_mails">Correos</h3>
+        <ul class="shared">
+          <li data-i18n="m1">Envío de <strong>facturas</strong> y de <strong>recordatorios</strong></li>
+          <li data-i18n="m2">Una copia de cada factura para tu contable</li>
+        </ul>
+      </div>
+      <div class="group">
+        <h3 data-i18n="g_ajustes">Ajustes y datos</h3>
+        <ul class="shared">
+          <li data-i18n="aj1">Logo, colores e idioma de tu empresa</li>
+          <li data-i18n="aj2">Tu calendario con <strong>Google</strong>, y el enlace <strong>.ics</strong> para cualquier otro calendario</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESUMEN -->
+  <section id="resumen">
+    <h3 data-i18n="sum_kicker">Resumen</h3>
+    <h2 data-i18n="sum_h2">Lo que ya funciona en la beta</h2>
+    <div class="group">
+        <ul class="proj">
+          <li data-i18n="e1">Horario fijo que genera las clases solo, con temporadas y festivos.</li>
+          <li data-i18n="e2">Facturas por pagador, con IVA por línea, abonos y envío con un clic.</li>
+          <li data-i18n="e3">Pago con iDEAL en cada factura, con Mollie.</li>
+          <li data-i18n="e4">Recordatorios de facturas vencidas.</li>
+          <li data-i18n="e5">Reserva pública para familias nuevas.</li>
+          <li data-i18n="e6">Portal de escuelas y portal de familias.</li>
+          <li data-i18n="e7">Conciertos y ensayos, con importación desde un mensaje.</li>
+          <li data-i18n="e8">Cronómetro de horas y kilómetros en la factura del proyecto.</li>
+          <li data-i18n="e9">Clientes con alumnos y clientes de proyectos.</li>
+          <li data-i18n="e10">BTW trimestral y cifras del año.</li>
+          <li data-i18n="e11">Calendario con Google y enlace .ics.</li>
+          <li data-i18n="m_3">Pasar una prueba a horario fijo.</li>
+          <li data-i18n="m_5">Un alumno que también es cliente, con un solo alta.</li>
+          <li data-i18n="m_6">Aviso a la escuela cuando se factura el mes de su sede.</li>
+          <li data-i18n="m_8">Descargar todos tus datos en un ZIP.</li>
+        </ul>
+      </div>
+  </section>
+
+  <!-- MEJORAS -->
+  <section id="mejoras">
+    <h3 data-i18n="later_kicker">Después</h3>
+    <h2 data-i18n="later_h2">Mejoras que vienen después</h2>
+    <div class="group">
+        <ul class="mus">
+          <li data-i18n="m_1">Ocultar las ramas que no usas (Qué ves).</li>
+          <li data-i18n="m_2">Importar las clases que ya diste antes de usar Jizai.</li>
+          <li data-i18n="m_4">Clases sueltas al final del curso.</li>
+          <li data-i18n="m_7">Dominio propio para los correos.</li>
+          <li data-i18n="m_9">Importar desde Moneybird, e-Boekhouden y otros programas.</li>
+          <li data-i18n="m_10">Conectar Mollie con un clic, sin pegar la clave.</li>
+        </ul>
+      </div>
+  </section>
+
+  <!-- LIMITES -->
+  <section id="limites">
+    <h3 data-i18n="lim_kicker">Ya sé que falla</h3>
+    <h2 data-i18n="lim_h2">Cosas que ya sé que fallan</h2>
+    <div class="group">
+        <ul class="prof">
+          <li data-i18n="lim_1">«Reenviar email» falla en facturas que ya están pagadas.</li>
+          <li data-i18n="lim_2">Los correos pueden acabar en spam.</li>
+        </ul>
+      </div>
+  </section>
+
+  <!-- PRIVACIDAD -->
+  <section id="privacidad">
+    <h3 data-i18n="priv_kicker">Privacidad</h3>
+    <h2 data-i18n="priv_h2">Tus datos</h2>
+    <div class="group">
+        <ul class="shared">
+          <li data-i18n="priv_1">Tus alumnos y clientes son tuyos. Los ves tú; las familias y las escuelas solo ven lo que tú les dejas ver.</li>
+          <li data-i18n="priv_2">Para cobrar y enviar las facturas, el nombre y el correo del pagador se envían a Mollie y al servicio de correo.</li>
+          <li data-i18n="priv_3">Si quieres dejar de usar la app o borrar tus datos, escríbeme y lo hacemos.</li>
+          <li data-i18n="priv_4">La política de privacidad completa está en la página de privacidad de la app.</li>
+        </ul>
+      </div>
+  </section>
+
+  <div class="ask">
+    <strong data-i18n="fb_h">Cómo avisarme</strong>
+    <p data-i18n="fb_p1">Escríbeme por WhatsApp: <strong>[tu número]</strong>.</p>
+    <p data-i18n="fb_p2">Mándame un audio con capturas de pantalla y cuéntame en tus palabras qué querías hacer, qué pasó y qué cambiarías. No hace falta que lo digas bien.</p>
+  </div>
+
+  <footer data-i18n="footer">Guía de Jizai para quien prueba la app. Solo recoge lo que ya funciona.</footer>
+</div>
+
+<script>
+(function () {
+  /* Textos en cuatro idiomas. El HTML trae el español por defecto; esto lo cambia al elegir idioma. */
+  var T = {
+    es: {
+      ent_kicker: "Antes de empezar",
+      ent_h2: "Entrar en la app",
+      ent_1: "Entras con tu correo: te llega un enlace de acceso. No hay contraseña.",
+      ent_2: "Solo entran los correos de la lista de invitados. Si no te llega el enlace, escríbeme.",
+      ent_3: "Para probar iDEAL: en <strong>Ajustes → Facturación</strong> pega tu clave de prueba de Mollie (la que empieza por <strong>test_</strong>).",
+      probar_kicker: "Por dónde empezar",
+      probar_h2: "Qué probar primero",
+      probar_1: "Crea un alumno con su horario fijo.",
+      probar_2: "Genera las clases del mes y mueve una.",
+      probar_3: "Crea la factura del mes y pon tu propio correo como pagador para recibirla.",
+      probar_4: "Mira el portal de familias: qué ve una familia de sus clases y facturas.",
+      probar_5: "Cronometra una hora en el móvil.",
+      probar_6: "Pega un mensaje con un concierto y revisa lo que la app entiende.",
+      probar_7: "Haz una factura de abono de una factura de prueba.",
+      rut_kicker: "Tu rutina",
+      rut_h2: "Media hora al mes",
+      rut_p: "No hace falta saber contabilidad. Con este ritmo, la administración te lleva unos 30 minutos al mes y nada se queda a medias.",
+      rut1_time: "Cada gasto · 10 segundos",
+      rut1_h: "Foto del ticket",
+      rut1_where: "Móvil → <b>+</b> → <b>Gasto</b>",
+      rut1_p: "Cuando pagas algo del trabajo, haz la foto del ticket en el momento. La app lo lee y lo guarda con su IVA. Nada de guardar papeles hasta final de trimestre.",
+      rut2_time: "Cada semana · 2 minutos",
+      rut2_h: "La semana al día",
+      rut2_where: "Agenda → <b>Generar clases</b>",
+      rut2_p: "Mira el horario fijo: un alumno nuevo, uno que lo deja, un cambio de hora. Después genera las clases. Durante la semana solo marcas lo raro: ausencias y recuperaciones.",
+      rut3_time: "Una vez al mes · 15 minutos",
+      rut3_h: "El día de facturar",
+      rut3_where: "Finanzas → <b>Banco y Mollie</b>, y Facturas",
+      rut3_1: "<strong>Sube el CSV del banco.</strong> Cada cobro se casa con su factura, que queda pagada con la fecha real, y cada pago con su gasto. Lo seguro se confirma de un clic; solo revisas lo que no encaja.",
+      rut3_2: "<strong>Facturar el mes.</strong> Un clic saca un borrador por pagador con las clases del mes. Échales un vistazo.",
+      rut3_3: "<strong>Envíalos todos.</strong> Selecciónalos en Facturas y mándalos por email a la vez.",
+      rut3_4: "<strong>Las que no han pagado:</strong> filtra por «Vencidas» y pulsa «Enviar recordatorio» para todas.",
+      rut4_time: "Cada trimestre y cada año",
+      rut4_h: "Impuestos sin sustos",
+      rut4_where: "Finanzas → <b>BTW trimestral</b> · <b>Declaración anual</b>",
+      rut4_p: "Como todo está al día, la declaración de BTW ya está hecha: solo copias las casillas en la web de la Belastingdienst. Una vez al año, la declaración anual junta las cifras del año.",
+      rut_total: "En total: unos 25 minutos al mes, más las fotos de los tickets. Lo que te ahorras es mirar la app del banco y marcar factura por factura a mano.",
+      sum_kicker: "Resumen",
+      sum_h2: "Lo que ya funciona en la beta",
+      e1: "Horario fijo que genera las clases solo, con temporadas y festivos.",
+      e2: "Facturas por pagador, con IVA por línea, abonos y envío con un clic.",
+      e3: "Pago con iDEAL en cada factura, con Mollie.",
+      e4: "Recordatorios de facturas vencidas.",
+      e5: "Reserva pública para familias nuevas.",
+      e6: "Portal de escuelas y portal de familias.",
+      e7: "Conciertos y ensayos, con importación desde un mensaje.",
+      e8: "Cronómetro de horas y kilómetros en la factura del proyecto.",
+      e9: "Clientes con alumnos y clientes de proyectos.",
+      e10: "BTW trimestral y cifras del año.",
+      e11: "Calendario con Google y enlace .ics.",
+      later_kicker: "Después",
+      later_h2: "Mejoras que vienen después",
+      m_1: "Ocultar las ramas que no usas (Qué ves).",
+      m_2: "Importar las clases que ya diste antes de usar Jizai.",
+      m_3: "Pasar una prueba a horario fijo.",
+      m_4: "Clases sueltas al final del curso.",
+      m_5: "Un alumno que también es cliente, con un solo alta.",
+      m_6: "Aviso a la escuela cuando se factura el mes de su sede.",
+      m_7: "Dominio propio para los correos.",
+      m_8: "Descargar todos tus datos en un ZIP.",
+      m_9: "Importar desde Moneybird, e-Boekhouden y otros programas.",
+      m_10: "Conectar Mollie con un clic, sin pegar la clave.",
+      lim_kicker: "Ya sé que falla",
+      lim_h2: "Cosas que ya sé que fallan",
+      lim_1: "«Reenviar email» falla en facturas que ya están pagadas.",
+      lim_2: "Los correos pueden acabar en spam.",
+      priv_kicker: "Privacidad",
+      priv_h2: "Tus datos",
+      priv_1: "Tus alumnos y clientes son tuyos. Los ves tú; las familias y las escuelas solo ven lo que tú les dejas ver.",
+      priv_2: "Para cobrar y enviar las facturas, el nombre y el correo del pagador se envían a Mollie y al servicio de correo.",
+      priv_3: "Si quieres dejar de usar la app o borrar tus datos, escríbeme y lo hacemos.",
+      priv_4: "La política de privacidad completa está en la página de privacidad de la app.",
+      fb_h: "Cómo avisarme",
+      fb_p1: "Escríbeme por WhatsApp: <strong>[tu número]</strong>.",
+      fb_p2: "Mándame un audio con capturas de pantalla y cuéntame en tus palabras qué querías hacer, qué pasó y qué cambiarías. No hace falta que lo digas bien.",
+      title: "Guía de Jizai", lang_label: "Idioma",
+      h_title: "Guía de <span>Jizai</span>",
+      h_lead: "Para quien prueba la app. Aquí está lo que ya funciona, qué hace cada parte y cómo empezar. El mapa de abajo te enseña dónde está cada cosa.",
+      s_kicker: "Primeros pasos", s_h2: "Empieza en tres pasos",
+      s_p: "Con estos tres pasos tienes el ciclo entero: un alumno, sus clases del mes y la factura enviada.",
+      st1_h: "Crear un alumno", st1_where: "Alumnos → <b>Nuevo alumno</b>",
+      st1_p1: "Pon su nombre, su fecha de nacimiento y su curso. Si lo paga un padre o una madre, crea ese cliente y enlaza al alumno con él. Así la factura va a quien paga.",
+      st1_p2: "Después dale su <strong>horario fijo</strong> y su paquete (de la sede donde da clase).",
+      st2_h: "Generar las clases del mes", st2_where: "Agenda → <b>Generar clases</b>",
+      st2_p1: "Con el horario fijo ya puesto, un botón crea las clases de la semana o del mes. Los días cerrados (vacaciones y festivos de tu temporada) se saltan solos.",
+      st2_p2: "Si algo cambia, muévela, márcala como ausencia o recupérala desde la agenda.",
+      st3_h: "Facturar y enviar", st3_where: "Facturas → <b>Crear borrador de factura</b>",
+      st3_p1: "La app saca el mes del horario con un clic: una factura por pagador, con el IVA de cada línea. Revisa el borrador.",
+      st3_p2: "Envíala por correo desde la factura con <strong>Enviar por email</strong>. Si la factura no se paga a tiempo, la app puede enviar recordatorios.",
+      m_kicker: "Dónde está cada cosa", m_h2: "El minimapa",
+      m_p: "Jizai tiene cinco ramas. Pulsa una para bajar a su sección.",
+      m_nav_aria: "Ramas de Jizai", m_root_span: "la app de una persona que vive de la música",
+      b_qv: "Qué ves", b_prof: "Profesores", b_mus: "Músicos", b_proj: "Proyectos y freelancing", b_shared: "Compartido",
+      qv_span: "Elegir qué ramas ves: Profesores, Músicos o las dos.", qv_small: "Llegará más adelante",
+      br_prof_span: "Alumnos, agenda, clases, facturas y los portales de escuelas y familias.",
+      br_mus_span: "Conciertos y ensayos, con su precio y su factura; y tus horas trabajadas.",
+      br_proj_span: "Encargos por horas, precio cerrado o internos; facturas sueltas y gastos.",
+      br_shared_span: "Clientes, kilómetros, BTW, cobros, correos y ajustes.",
+      rama1: "Rama 1", rama2: "Rama 2", rama3: "Rama 3", rama4: "Rama 4",
+      prof_p: "Tus clases con alumnos de varias escuelas y familias: cuándo das clase, dónde, qué se factura y quién lo recibe.",
+      g_agenda: "Agenda y clases",
+      a1: "<strong>Horario fijo</strong>: el horario semanal del alumno. Genera sus clases solas <span class=\"t-auto\">Automatiza</span>",
+      a2: "Mover una clase, marcar una <strong>ausencia</strong> o hacer una <strong>recuperación</strong>",
+      a3: "Generar las clases de la semana o del mes con un botón <span class=\"t-auto\">Automatiza</span>",
+      a4: "<strong>Temporadas</strong> (cursos) con sus fechas. La generación salta vacaciones y festivos <span class=\"t-auto\">Automatiza</span>",
+      a5: "Cada clase tiene su estado: <strong>dada</strong>, <strong>no-show</strong>, cancelada por el alumno o cancelada por ti. Puedes escribir una nota de asistencia",
+      a6: "<strong>Sedes</strong>: una escuela (con su portal) o una clase privada. Cada <strong>paquete</strong> pertenece a una sede",
+      a7: "<strong>Citas sueltas</strong>, huecos que se ofrecen en la reserva y bloques ocupados de tu calendario",
+      a8: "<strong>Reserva pública</strong>: las familias nuevas reservan su prueba o una reunión, y rellenan sus datos solas <span class=\"t-auto\">Automatiza</span>",
+      g_fact: "Facturación de clases",
+      f1: "<strong>Generar el mes desde el horario</strong>: todo el mes sale con un clic <span class=\"t-auto\">Automatiza</span>",
+      f2: "<strong>Facturas</strong>: una factura por pagador, con el IVA de cada línea (y por edad, si el alumno lo tiene así). También puedes hacer <strong>facturas de abono</strong> para anular una",
+      f3: "<strong>Envío</strong>: con un clic salen todas las facturas preparadas a la vez. Cada una va con su correo personalizado, su enlace de pago y su PDF <span class=\"t-auto\">Automatiza</span>",
+      f4: "<strong>Recordatorios</strong> de facturas vencidas",
+      f5: "<strong>Pago con iDEAL</strong> desde el enlace de la factura, con Mollie activado",
+      g_school: "Portal de escuelas",
+      sc_p: "Para las escuelas con las que trabajas. Dos partes: lo que llega de la escuela y lo que la escuela ve.",
+      sc1: "La escuela manda un alumno. Tú lo <strong>aceptas o lo rechazas</strong>",
+      sc2: "La escuela ve sus profes conectados, con su sede",
+      sc3: "Ve las <strong>clases dadas por mes y por alumno</strong>, sin tener que pedirte listados <span class=\"t-auto\">Automatiza</span>",
+      sc4: "Ve qué clases ya están facturadas",
+      sc5: "Invitas a los coordinadores de la escuela por email",
+      g_family: "Portal de familias",
+      fa_p: "Para las familias de tus alumnos. Dos partes: las clases del alumno y sus facturas.",
+      fa1: "Ven las <strong>clases hechas</strong>, con tu nota, y las <strong>próximas</strong> con su horario",
+      fa2: "La familia avisa de sus <strong>ausencias</strong>",
+      fa3: "Las clases van a su propio calendario",
+      fa4: "Ven sus <strong>facturas</strong> y su estado, y pueden pagar con iDEAL desde la factura",
+      mus_p: "Lo que tocas y cuánto cobras, para cuando trabajas como músico y no como profesor.",
+      g_conc: "Conciertos y ensayos",
+      conc_p: "Lo más importante para ti como músico. Cada concierto y cada ensayo cuelga de un proyecto de Proyectos.",
+      c1: "<strong>Conciertos</strong>: fechas y bolos, con el <strong>cachet y el viaje</strong> (el viaje con 9 % de BTW). Puedes importar los bolos desde una hoja",
+      c2: "<strong>Ensayos</strong>: cada uno con su precio. Si un ensayo va incluido en el concierto, pon 0 €",
+      c3: "<strong>Importar desde un mensaje</strong>: pegas un email, un WhatsApp o una captura, y la app lee los conciertos y ensayos con su fecha, hora y lugar <span class=\"t-auto\">Automatiza</span>",
+      c4: "La app enlaza lo que importas al proyecto del cliente, o crea el cliente con sus precios. <strong>Revisas las fechas antes de guardar</strong>",
+      c5: "<strong>Factura del proyecto</strong>: conciertos, ensayos y kilómetros en una sola factura, al final del mes o del proyecto <span class=\"t-auto\">Automatiza</span>",
+      g_hours: "Horas trabajadas",
+      h1: "<strong>Cronómetro en el móvil</strong>: lo pones al empezar y lo paras al acabar",
+      h2: "Apuntar <strong>horas sueltas</strong> y <strong>citas</strong> a mano, si no las has cronometrado",
+      proj_p: "Encargos que no son clases ni conciertos. Cada proyecto tiene su forma de cobro. Los conciertos y ensayos de Músicos cuelgan de aquí.",
+      g_pcobro: "Proyectos: cómo se cobra",
+      p1: "<strong>Por horas</strong>: cada hora trabajada se factura",
+      p2: "<strong>Precio cerrado</strong>: un precio para todo el encargo",
+      p3: "<strong>Presupuesto de horas</strong>: un número de horas acordado",
+      p4: "<strong>Interno, sin cliente</strong>: trabajo para ti, sin factura a nadie",
+      g_sueltas: "Facturas sueltas y gastos",
+      s1: "Una <strong>factura de proyecto</strong> o una <strong>factura de abono</strong>, sin pasar por el horario",
+      s2: "<strong>Gastos</strong>: haz una foto del recibo y la app lee los datos por ti",
+      s3: "<strong>Extracto del banco</strong> para ver lo que has pagado",
+      sh_p: "Lo que usan las dos partes: clientes, kilómetros, BTW, cobros, correos y ajustes.",
+      g_crm: "Clientes (CRM)", crm_p: "Todos son clientes: quién paga.",
+      crm1: "<strong>Con alumnos</strong>: el padre o la madre que paga, con uno o más alumnos enlazados. Del alumno: nombre, fecha de nacimiento y curso. Y cómo se organizan sus clases (horario y paquete)",
+      crm2: "<strong>De proyectos</strong>: la empresa o persona que te encarga, con sus proyectos y sus datos de factura: dirección, IVA y número de BTW",
+      g_km: "Kilómetros",
+      km1: "Los viajes de las clases salen de la agenda",
+      km2: "Los viajes de los conciertos salen de las horas",
+      km3: "Se pueden sumar a la factura de un proyecto",
+      g_fin: "Finanzas y BTW",
+      fin1: "La <strong>aangifte</strong> (declaración de BTW) de cada trimestre",
+      fin2: "Las cifras del año y los <strong>cobros pendientes</strong>",
+      g_cobros: "Cobros",
+      cob1: "Pago con <strong>iDEAL</strong>, con Mollie. Se activa en Mollie y funciona también en su modo de prueba",
+      g_mails: "Correos",
+      m1: "Envío de <strong>facturas</strong> y de <strong>recordatorios</strong>",
+      m2: "Una copia de cada factura para tu contable",
+      g_ajustes: "Ajustes y datos",
+      aj1: "Logo, colores e idioma de tu empresa",
+      aj2: "Tu calendario con <strong>Google</strong>, y el enlace <strong>.ics</strong> para cualquier otro calendario",
+      ask_h: "¿Algo no está donde esperabas?",
+      ask_p: "Dilo tal cual lo viste: qué querías hacer, en qué pantalla estabas y qué pasó. Eso ayuda más que una descripción general.",
+      footer: "Guía de Jizai para quien prueba la app. Solo recoge lo que ya funciona."
+    },
+    en: {
+      ent_kicker: "Before you start",
+      ent_h2: "Signing in",
+      ent_1: "You sign in with your email: you get an access link. There is no password.",
+      ent_2: "Only emails on the guest list can get in. If the link doesn't arrive, message me.",
+      ent_3: "To test iDEAL: in <strong>Settings → Invoicing</strong>, paste your Mollie test key (the one that starts with <strong>test_</strong>).",
+      probar_kicker: "Where to start",
+      probar_h2: "What to try first",
+      probar_1: "Create a student with a fixed timetable.",
+      probar_2: "Generate the month's lessons and move one.",
+      probar_3: "Create the month's invoice and put your own email as the payer to receive it.",
+      probar_4: "Look at the family portal: what a family sees of their lessons and invoices.",
+      probar_5: "Time an hour on your phone.",
+      probar_6: "Paste a message about a concert and check what the app understands.",
+      probar_7: "Make a credit note for a test invoice.",
+      rut_kicker: "Your routine",
+      rut_h2: "Half an hour a month",
+      rut_p: "You don't need to know accounting. Keep this rhythm and the admin takes about 30 minutes a month, with nothing left half done.",
+      rut1_time: "Every expense · 10 seconds",
+      rut1_h: "Photo of the receipt",
+      rut1_where: "Phone → <b>+</b> → <b>Expense</b>",
+      rut1_p: "When you pay for something for work, take a photo of the receipt right away. The app reads it and saves it with its VAT. No more keeping paper until the end of the quarter.",
+      rut2_time: "Every week · 2 minutes",
+      rut2_h: "The week up to date",
+      rut2_where: "Calendar → <b>Generate lessons</b>",
+      rut2_p: "Check the fixed timetable: a new student, one who stops, a time change. Then generate the lessons. During the week you only mark the unusual: absences and make-up lessons.",
+      rut3_time: "Once a month · 15 minutes",
+      rut3_h: "Invoicing day",
+      rut3_where: "Finances → <b>Bank and Mollie</b>, and Invoices",
+      rut3_1: "<strong>Upload the bank CSV.</strong> Each payment received is matched to its invoice, which is marked paid with the real date, and each payment made to its expense. Safe matches are confirmed in one click; you only check what doesn't fit.",
+      rut3_2: "<strong>Invoice the month.</strong> One click makes a draft per payer with the month's lessons. Have a quick look.",
+      rut3_3: "<strong>Send them all.</strong> Select them in Invoices and email them at once.",
+      rut3_4: "<strong>Those who haven't paid:</strong> filter by “Overdue” and press “Send reminder” for all of them.",
+      rut4_time: "Every quarter and every year",
+      rut4_h: "Taxes without surprises",
+      rut4_where: "Finances → <b>Quarterly VAT</b> · <b>Annual return</b>",
+      rut4_p: "Because everything is up to date, the VAT return is already done: you just copy the boxes into the Belastingdienst website. Once a year, the annual return gathers the year's figures.",
+      rut_total: "All in all: about 25 minutes a month, plus the receipt photos. What you save is checking the bank app and marking invoices paid one by one.",
+      sum_kicker: "Summary",
+      sum_h2: "What already works in the beta",
+      e1: "A fixed timetable that generates lessons by itself, with seasons and holidays.",
+      e2: "Invoices per payer, with VAT per line, credit notes and one-click sending.",
+      e3: "iDEAL payment on every invoice, through Mollie.",
+      e4: "Reminders for overdue invoices.",
+      e5: "Public booking for new families.",
+      e6: "School portal and family portal.",
+      e7: "Concerts and rehearsals, with import from a message.",
+      e8: "Hour timer and kilometres on the project invoice.",
+      e9: "Clients with students and project clients.",
+      e10: "Quarterly VAT (BTW) and the year's figures.",
+      e11: "Google Calendar and an .ics link.",
+      later_kicker: "Later",
+      later_h2: "Improvements coming later",
+      m_1: "Hide the branches you don't use (What you see).",
+      m_2: "Import the lessons you gave before using Jizai.",
+      m_3: "Turn a trial lesson into a fixed timetable.",
+      m_4: "Single lessons at the end of the term.",
+      m_5: "A student who is also a client, with a single record.",
+      m_6: "A notice to the school when its location's month is invoiced.",
+      m_7: "Your own domain for emails.",
+      m_8: "Download all your data as a ZIP.",
+      m_9: "Import from Moneybird, e-Boekhouden and other programmes.",
+      m_10: "Connect Mollie with one click, without pasting the key.",
+      lim_kicker: "Known issues",
+      lim_h2: "Things I already know are broken",
+      lim_1: "«Resend email» fails on invoices that are already paid.",
+      lim_2: "Emails can end up in spam.",
+      priv_kicker: "Privacy",
+      priv_h2: "Your data",
+      priv_1: "Your students and clients are yours. You see them; families and schools only see what you let them see.",
+      priv_2: "To charge and send invoices, the payer's name and email are sent to Mollie and the email service.",
+      priv_3: "If you want to stop using the app or delete your data, message me and we'll do it.",
+      priv_4: "The full privacy policy is on the app's privacy page.",
+      fb_h: "How to reach me",
+      fb_p1: "Message me on WhatsApp: <strong>[your number]</strong>.",
+      fb_p2: "Send me a voice note with screenshots and tell me in your own words what you wanted to do, what happened and what you would change. It doesn't have to be polished.",
+      title: "Jizai guide", lang_label: "Language",
+      h_title: "Jizai <span>guide</span>",
+      h_lead: "For anyone testing the app. Here is what already works, what each part does and how to start. The map below shows where everything is.",
+      s_kicker: "First steps", s_h2: "Start in three steps",
+      s_p: "With these three steps you go through the whole cycle: a student, their lessons for the month and the invoice sent.",
+      st1_h: "Create a student", st1_where: "Students → <b>New student</b>",
+      st1_p1: "Enter their name, date of birth and course. If a parent pays, create that client and link the student to them. That way the invoice goes to the person who pays.",
+      st1_p2: "Then give them their <strong>fixed timetable</strong> and their package (from the location where they have lessons).",
+      st2_h: "Generate the month's lessons", st2_where: "Calendar → <b>Generate lessons</b>",
+      st2_p1: "With the fixed timetable set, one button creates the lessons for the week or the month. Closed days (holidays and public holidays in your season) are skipped automatically.",
+      st2_p2: "If something changes, move it, mark it as an absence or make it up from the calendar.",
+      st3_h: "Invoice and send", st3_where: "Invoices → <b>Create invoice draft</b>",
+      st3_p1: "The app builds the month from the timetable with one click: one invoice per payer, with the VAT on each line. Check the draft.",
+      st3_p2: "Send it by email from the invoice with <strong>Send by email</strong>. If an invoice is not paid on time, the app can send reminders.",
+      m_kicker: "Where things are", m_h2: "The mini map",
+      m_p: "Jizai has five branches. Tap one to go to its section.",
+      m_nav_aria: "Jizai branches", m_root_span: "the app for someone who lives from music",
+      b_qv: "What you see", b_prof: "Teachers", b_mus: "Musicians", b_proj: "Projects and freelancing", b_shared: "Shared",
+      qv_span: "Choose which branches you see: Teachers, Musicians or both.", qv_small: "Coming later",
+      br_prof_span: "Students, calendar, lessons, invoices and the school and family portals.",
+      br_mus_span: "Concerts and rehearsals, with their price and invoice; and your worked hours.",
+      br_proj_span: "Hourly, fixed-price or internal jobs; standalone invoices and expenses.",
+      br_shared_span: "Clients, kilometres, VAT (BTW), payments, emails and settings.",
+      rama1: "Branch 1", rama2: "Branch 2", rama3: "Branch 3", rama4: "Branch 4",
+      prof_p: "Your lessons with students from several schools and families: when you teach, where, what gets invoiced and who receives it.",
+      g_agenda: "Calendar and lessons",
+      a1: "<strong>Fixed timetable</strong>: the student's weekly schedule. It generates their lessons by itself <span class=\"t-auto\">Automated</span>",
+      a2: "Move a lesson, mark an <strong>absence</strong> or book a <strong>make-up lesson</strong>",
+      a3: "Generate the week's or month's lessons with one button <span class=\"t-auto\">Automated</span>",
+      a4: "<strong>Seasons</strong> (terms) with their dates. Generation skips holidays and public holidays <span class=\"t-auto\">Automated</span>",
+      a5: "Each lesson has a status: <strong>given</strong>, <strong>no-show</strong>, cancelled by the student or cancelled by you. You can write an attendance note",
+      a6: "<strong>Locations</strong>: a school (with its portal) or private lessons. Each <strong>package</strong> belongs to one location",
+      a7: "<strong>Single appointments</strong>, slots offered in the booking page and busy blocks from your calendar",
+      a8: "<strong>Public booking</strong>: new families book their trial lesson or a meeting, and fill in their details themselves <span class=\"t-auto\">Automated</span>",
+      g_fact: "Lesson invoicing",
+      f1: "<strong>Generate the month from the timetable</strong>: the whole month comes out with one click <span class=\"t-auto\">Automated</span>",
+      f2: "<strong>Invoices</strong>: one invoice per payer, with the VAT on each line (and by age, if the student has it set that way). You can also make <strong>credit notes</strong> to cancel an invoice",
+      f3: "<strong>Sending</strong>: one click sends all the prepared invoices at once. Each one goes with its personalised email, its payment link and its PDF <span class=\"t-auto\">Automated</span>",
+      f4: "<strong>Reminders</strong> for overdue invoices",
+      f5: "<strong>iDEAL payment</strong> from the invoice link, with Mollie switched on",
+      g_school: "School portal",
+      sc_p: "For the schools you work with. Two parts: what arrives from the school and what the school can see.",
+      sc1: "The school sends you a student. You <strong>accept or decline</strong> them",
+      sc2: "The school sees its teachers who are connected, with their location",
+      sc3: "It sees the <strong>lessons given per month and per student</strong>, without asking you for lists <span class=\"t-auto\">Automated</span>",
+      sc4: "It sees which lessons are already invoiced",
+      sc5: "You invite the school's coordinators by email",
+      g_family: "Family portal",
+      fa_p: "For your students' families. Two parts: the student's lessons and their invoices.",
+      fa1: "They see the <strong>lessons done</strong>, with your note, and the <strong>upcoming</strong> ones with their times",
+      fa2: "The family reports their <strong>absences</strong>",
+      fa3: "The lessons go to their own calendar",
+      fa4: "They see their <strong>invoices</strong> and their status, and can pay with iDEAL from the invoice",
+      mus_p: "What you play and what you earn, for when you work as a musician rather than a teacher.",
+      g_conc: "Concerts and rehearsals",
+      conc_p: "The most important part for you as a musician. Every concert and rehearsal hangs off a project in Projects.",
+      c1: "<strong>Concerts</strong>: dates and gigs, with the <strong>fee and travel</strong> (travel with 9% VAT/BTW). You can import the gigs from a spreadsheet",
+      c2: "<strong>Rehearsals</strong>: each with its own price. If a rehearsal is included in the concert, enter €0",
+      c3: "<strong>Import from a message</strong>: paste an email, a WhatsApp or a screenshot, and the app reads the concerts and rehearsals with their date, time and place <span class=\"t-auto\">Automated</span>",
+      c4: "The app links what you import to the client's project, or creates the client with their prices. <strong>You check the dates before saving</strong>",
+      c5: "<strong>Project invoice</strong>: concerts, rehearsals and kilometres on a single invoice, at the end of the month or the project <span class=\"t-auto\">Automated</span>",
+      g_hours: "Hours worked",
+      h1: "<strong>Stopwatch on the phone</strong>: start it when you begin and stop it when you finish",
+      h2: "Log <strong>single hours</strong> and <strong>appointments</strong> by hand, if you didn't time them",
+      proj_p: "Jobs that are neither lessons nor concerts. Each project has its own way of charging. Concerts and rehearsals from Musicians hang off here.",
+      g_pcobro: "Projects: how you charge",
+      p1: "<strong>Hourly</strong>: each hour worked is invoiced",
+      p2: "<strong>Fixed price</strong>: one price for the whole job",
+      p3: "<strong>Hour budget</strong>: an agreed number of hours",
+      p4: "<strong>Internal, no client</strong>: work for yourself, no invoice to anyone",
+      g_sueltas: "Standalone invoices and expenses",
+      s1: "A <strong>project invoice</strong> or a <strong>credit note</strong>, without going through the timetable",
+      s2: "<strong>Expenses</strong>: take a photo of the receipt and the app reads the details for you",
+      s3: "<strong>Bank statement</strong> to see what you have paid",
+      sh_p: "What both sides use: clients, kilometres, VAT (BTW), payments, emails and settings.",
+      g_crm: "Clients (CRM)", crm_p: "They are all clients: who pays.",
+      crm1: "<strong>With students</strong>: the parent who pays, with one or more linked students. For the student: name, date of birth and course. And how their lessons are arranged (timetable and package)",
+      crm2: "<strong>From projects</strong>: the company or person who commissions you, with their projects and their invoice details: address, VAT (BTW) and VAT number",
+      g_km: "Kilometres",
+      km1: "Lesson trips come from the calendar",
+      km2: "Concert trips come from the hours",
+      km3: "They can be added to a project invoice",
+      g_fin: "Finance and VAT (BTW)",
+      fin1: "The quarterly <strong>aangifte</strong> (VAT return)",
+      fin2: "The year's figures and <strong>outstanding payments</strong>",
+      g_cobros: "Payments",
+      cob1: "<strong>iDEAL</strong> payment, with Mollie. It is switched on in Mollie and also works in its test mode",
+      g_mails: "Emails",
+      m1: "Sending <strong>invoices</strong> and <strong>reminders</strong>",
+      m2: "A copy of each invoice for your accountant",
+      g_ajustes: "Settings and data",
+      aj1: "Your company's logo, colours and language",
+      aj2: "Your <strong>Google</strong> calendar, and the <strong>.ics</strong> link for any other calendar",
+      ask_h: "Something not where you expected?",
+      ask_p: "Tell it the way you saw it: what you wanted to do, which screen you were on and what happened. That helps more than a general description.",
+      footer: "Jizai guide for anyone testing the app. It only covers what already works."
+    },
+    nl: {
+      ent_kicker: "Voordat je begint",
+      ent_h2: "Inloggen",
+      ent_1: "Je logt in met je e-mail: je krijgt een toegangslink. Er is geen wachtwoord.",
+      ent_2: "Alleen e-mailadressen op de gastenlijst kunnen binnen. Komt de link niet aan, stuur me een bericht.",
+      ent_3: "Om iDEAL te testen: plak in <strong>Instellingen → Facturatie</strong> je Mollie-testsleutel (die begint met <strong>test_</strong>).",
+      probar_kicker: "Waar begin je",
+      probar_h2: "Wat je het eerst probeert",
+      probar_1: "Maak een leerling aan met een vast rooster.",
+      probar_2: "Genereer de lessen van de maand en verplaats er één.",
+      probar_3: "Maak de factuur van de maand en zet je eigen e-mail als betaler om hem te ontvangen.",
+      probar_4: "Bekijk het gezinsportaal: wat een gezin ziet van lessen en facturen.",
+      probar_5: "Meet een uur op je telefoon.",
+      probar_6: "Plak een bericht over een concert en controleer wat de app begrijpt.",
+      probar_7: "Maak een creditfactuur voor een testfactuur.",
+      rut_kicker: "Je routine",
+      rut_h2: "Een half uur per maand",
+      rut_p: "Je hoeft geen boekhouding te kennen. Met dit ritme kost de administratie je zo'n 30 minuten per maand en blijft er niets half liggen.",
+      rut1_time: "Elke uitgave · 10 seconden",
+      rut1_h: "Foto van de bon",
+      rut1_where: "Telefoon → <b>+</b> → <b>Kosten</b>",
+      rut1_p: "Betaal je iets voor je werk, maak dan meteen een foto van de bon. De app leest hem en bewaart hem met de btw. Geen papiertjes meer bewaren tot het einde van het kwartaal.",
+      rut2_time: "Elke week · 2 minuten",
+      rut2_h: "De week bijwerken",
+      rut2_where: "Agenda → <b>Lessen genereren</b>",
+      rut2_p: "Kijk naar het vaste rooster: een nieuwe leerling, een die stopt, een andere tijd. Genereer daarna de lessen. Door de week markeer je alleen wat afwijkt: afwezigheden en inhaallessen.",
+      rut3_time: "Eén keer per maand · 15 minuten",
+      rut3_h: "Factuurdag",
+      rut3_where: "Financiën → <b>Bank en Mollie</b>, en Facturen",
+      rut3_1: "<strong>Upload de bank-CSV.</strong> Elke ontvangst wordt aan zijn factuur gekoppeld, die betaald wordt met de echte datum, en elke betaling aan zijn kosten. Zekere matches bevestig je met één klik; je controleert alleen wat niet klopt.",
+      rut3_2: "<strong>Maand factureren.</strong> Eén klik maakt een concept per betaler met de lessen van de maand. Kijk ze even na.",
+      rut3_3: "<strong>Verstuur ze allemaal.</strong> Selecteer ze in Facturen en mail ze in één keer.",
+      rut3_4: "<strong>Wie nog niet betaald heeft:</strong> filter op ‘Achterstallig’ en druk op ‘Herinnering versturen’ voor allemaal.",
+      rut4_time: "Elk kwartaal en elk jaar",
+      rut4_h: "Belastingen zonder verrassingen",
+      rut4_where: "Financiën → <b>Btw-aangifte</b> · <b>Jaaraangifte</b>",
+      rut4_p: "Omdat alles bijgewerkt is, staat de btw-aangifte al klaar: je neemt alleen de vakjes over op de site van de Belastingdienst. Eén keer per jaar zet de jaaraangifte de cijfers van het jaar bij elkaar.",
+      rut_total: "Alles bij elkaar: zo'n 25 minuten per maand, plus de foto's van de bonnen. Wat je bespaart: in de bank-app kijken en factuur voor factuur op betaald zetten.",
+      sum_kicker: "Samenvatting",
+      sum_h2: "Wat nu al werkt in de beta",
+      e1: "Een vast rooster dat de lessen zelf maakt, met seizoenen en feestdagen.",
+      e2: "Facturen per betaler, met BTW per regel, creditfacturen en verzenden met één klik.",
+      e3: "Betaling met iDEAL op elke factuur, via Mollie.",
+      e4: "Herinneringen voor vervallen facturen.",
+      e5: "Openbare boeking voor nieuwe gezinnen.",
+      e6: "Portaal voor scholen en gezinnen.",
+      e7: "Concerten en repetities, met import uit een bericht.",
+      e8: "Urenteller en kilometers op de projectfactuur.",
+      e9: "Klanten met leerlingen en projectklanten.",
+      e10: "BTW per kwartaal en cijfers van het jaar.",
+      e11: "Google-agenda en een .ics-link.",
+      later_kicker: "Later",
+      later_h2: "Verbeteringen die later komen",
+      m_1: "Verberg de takken die je niet gebruikt.",
+      m_2: "Lessen die je al gaf vóór Jizai importeren.",
+      m_3: "Een proefles omzetten in een vast rooster.",
+      m_4: "Losse lessen aan het eind van het seizoen.",
+      m_5: "Een leerling die ook klant is, met één registratie.",
+      m_6: "Melding naar de school als de maand van haar locatie gefactureerd is.",
+      m_7: "Eigen domein voor de e-mails.",
+      m_8: "Al je gegevens downloaden als ZIP.",
+      m_9: "Importeren uit Moneybird, e-Boekhouden en andere programma's.",
+      m_10: "Mollie met één klik verbinden, zonder de sleutel te plakken.",
+      lim_kicker: "Bekende problemen",
+      lim_h2: "Dingen waarvan ik al weet dat ze misgaan",
+      lim_1: "«E-mail opnieuw sturen» werkt niet bij facturen die al betaald zijn.",
+      lim_2: "E-mails kunnen in de spam belanden.",
+      priv_kicker: "Privacy",
+      priv_h2: "Jouw gegevens",
+      priv_1: "Je leerlingen en klanten zijn van jou. Jij ziet ze; gezinnen en scholen zien alleen wat jij hen laat zien.",
+      priv_2: "Om te factureren en te verzenden, worden de naam en het e-mailadres van de betaler naar Mollie en de mailservice gestuurd.",
+      priv_3: "Wil je stoppen of je gegevens laten verwijderen, stuur me een bericht en we regelen het.",
+      priv_4: "Het volledige privacybeleid staat op de privacypagina van de app.",
+      fb_h: "Hoe je me bereikt",
+      fb_p1: "Stuur me een bericht op WhatsApp: <strong>[je nummer]</strong>.",
+      fb_p2: "Stuur me een spraakbericht met screenshots en vertel in je eigen woorden wat je wilde doen, wat er gebeurde en wat je zou veranderen. Het hoeft niet netjes.",
+      title: "Gids voor Jizai", lang_label: "Taal",
+      h_title: "Gids voor <span>Jizai</span>",
+      h_lead: "Voor wie de app uitprobeert. Hier staat wat al werkt, wat elk onderdeel doet en hoe je begint. De kaart hieronder laat zien waar alles staat.",
+      s_kicker: "Eerste stappen", s_h2: "Begin in drie stappen",
+      s_p: "Met deze drie stappen doorloop je de hele cyclus: een leerling, de lessen van de maand en de verzonden factuur.",
+      st1_h: "Een leerling aanmaken", st1_where: "Leerlingen → <b>Nieuwe leerling</b>",
+      st1_p1: "Vul naam, geboortedatum en cursus in. Betaalt een ouder, maak dan die klant aan en koppel de leerling eraan. Zo gaat de factuur naar degene die betaalt.",
+      st1_p2: "Geef daarna het <strong>vaste rooster</strong> en het pakket op (van de locatie waar de les is).",
+      st2_h: "De lessen van de maand genereren", st2_where: "Agenda → <b>Lessen genereren</b>",
+      st2_p1: "Als het vaste rooster is ingesteld, maakt één knop de lessen voor de week of de maand aan. Gesloten dagen (vakanties en feestdagen in je seizoen) worden automatisch overgeslagen.",
+      st2_p2: "Verandert er iets, verplaats de les, markeer haar als afwezig of haal ze in via de agenda.",
+      st3_h: "Factureren en verzenden", st3_where: "Facturen → <b>Conceptfactuur maken</b>",
+      st3_p1: "De app maakt met één klik de maand op basis van het rooster: één factuur per betaler, met de BTW per regel. Controleer het concept.",
+      st3_p2: "Verstuur hem per e-mail vanuit de factuur met <strong>Verzenden per e-mail</strong>. Wordt een factuur niet op tijd betaald, dan kan de app herinneringen sturen.",
+      m_kicker: "Waar alles staat", m_h2: "De minikaart",
+      m_p: "Jizai heeft vijf takken. Tik op een tak om naar het bijbehorende deel te gaan.",
+      m_nav_aria: "Takken van Jizai", m_root_span: "de app voor iemand die van muziek leeft",
+      b_qv: "Wat je ziet", b_prof: "Docenten", b_mus: "Muzikanten", b_proj: "Projecten en freelance", b_shared: "Gedeeld",
+      qv_span: "Kies welke takken je ziet: Docenten, Muzikanten of beide.", qv_small: "Komt later",
+      br_prof_span: "Leerlingen, agenda, lessen, facturen en de portalen voor scholen en gezinnen.",
+      br_mus_span: "Concerten en repetities, met prijs en factuur; en je gewerkte uren.",
+      br_proj_span: "Opdrachten per uur, vaste prijs of intern; losse facturen en uitgaven.",
+      br_shared_span: "Klanten, kilometers, BTW, betalingen, e-mails en instellingen.",
+      rama1: "Tak 1", rama2: "Tak 2", rama3: "Tak 3", rama4: "Tak 4",
+      prof_p: "Je lessen met leerlingen van verschillende scholen en gezinnen: wanneer je les geeft, waar, wat er gefactureerd wordt en wie het ontvangt.",
+      g_agenda: "Agenda en lessen",
+      a1: "<strong>Vast rooster</strong>: het wekelijkse rooster van de leerling. Maakt de lessen vanzelf aan <span class=\"t-auto\">Automatisch</span>",
+      a2: "Een les verplaatsen, een <strong>afwezigheid</strong> markeren of een <strong>inhaalles</strong> plannen",
+      a3: "De lessen van de week of de maand genereren met één knop <span class=\"t-auto\">Automatisch</span>",
+      a4: "<strong>Seizoenen</strong> (cursussen) met hun data. Het genereren slaat vakanties en feestdagen over <span class=\"t-auto\">Automatisch</span>",
+      a5: "Elke les heeft een status: <strong>gegeven</strong>, <strong>no-show</strong>, geannuleerd door de leerling of door jou. Je kunt een aanwezigheidsnotitie schrijven",
+      a6: "<strong>Locaties</strong>: een school (met het portaal) of privélessen. Elk <strong>pakket</strong> hoort bij één locatie",
+      a7: "<strong>Losse afspraken</strong>, tijdsloten die in de boeking worden aangeboden en bezette blokken uit je agenda",
+      a8: "<strong>Openbare boeking</strong>: nieuwe gezinnen boeken hun proefles of een gesprek en vullen zelf hun gegevens in <span class=\"t-auto\">Automatisch</span>",
+      g_fact: "Lessen factureren",
+      f1: "<strong>De maand genereren vanuit het rooster</strong>: de hele maand komt er met één klik uit <span class=\"t-auto\">Automatisch</span>",
+      f2: "<strong>Facturen</strong>: één factuur per betaler, met de BTW per regel (en per leeftijd, als de leerling dat zo heeft). Je kunt ook <strong>creditfacturen</strong> maken om een factuur te annuleren",
+      f3: "<strong>Verzenden</strong>: met één klik gaan alle klaarstaande facturen tegelijk uit. Elk met een persoonlijke e-mail, een betaallink en de pdf <span class=\"t-auto\">Automatisch</span>",
+      f4: "<strong>Herinneringen</strong> voor vervallen facturen",
+      f5: "<strong>Betaling met iDEAL</strong> via de betaallink op de factuur, met Mollie ingeschakeld",
+      g_school: "Portaal voor scholen",
+      sc_p: "Voor de scholen waar je mee werkt. Twee delen: wat van de school binnenkomt en wat de school ziet.",
+      sc1: "De school stuurt een leerling. Jij <strong>accepteert of weigert</strong> die",
+      sc2: "De school ziet haar docenten die zijn aangesloten, met hun locatie",
+      sc3: "Ze ziet de <strong>gegeven lessen per maand en per leerling</strong>, zonder lijsten bij jou op te vragen <span class=\"t-auto\">Automatisch</span>",
+      sc4: "Ze ziet welke lessen al zijn gefactureerd",
+      sc5: "Je nodigt de coördinatoren van de school per e-mail uit",
+      g_family: "Portaal voor gezinnen",
+      fa_p: "Voor de gezinnen van je leerlingen. Twee delen: de lessen van de leerling en hun facturen.",
+      fa1: "Ze zien de <strong>gegeven lessen</strong>, met jouw notitie, en de <strong>komende</strong> met hun tijden",
+      fa2: "Het gezin meldt zijn <strong>afwezigheden</strong>",
+      fa3: "De lessen gaan naar hun eigen agenda",
+      fa4: "Ze zien hun <strong>facturen</strong> en de status, en kunnen met iDEAL betalen vanaf de factuur",
+      mus_p: "Wat je speelt en wat je verdient, voor wanneer je als muzikant werkt en niet als docent.",
+      g_conc: "Concerten en repetities",
+      conc_p: "Het belangrijkste voor jou als muzikant. Elk concert en elke repetitie hoort bij een project onder Projecten.",
+      c1: "<strong>Concerten</strong>: data en optredens, met het <strong>honorarium en de reis</strong> (de reis met 9% BTW). Je kunt de optredens uit een spreadsheet importeren",
+      c2: "<strong>Repetities</strong>: elk met een eigen prijs. Als een repetitie bij het concert inbegrepen is, vul je € 0 in",
+      c3: "<strong>Importeren uit een bericht</strong>: plak een e-mail, een WhatsApp-bericht of een screenshot, en de app leest de concerten en repetities met datum, tijd en plaats <span class=\"t-auto\">Automatisch</span>",
+      c4: "De app koppelt wat je importeert aan het project van de klant, of maakt de klant aan met hun tarieven. <strong>Je controleert de data voordat je opslaat</strong>",
+      c5: "<strong>Projectfactuur</strong>: concerten, repetities en kilometers op één factuur, aan het eind van de maand of het project <span class=\"t-auto\">Automatisch</span>",
+      g_hours: "Gewerkte uren",
+      h1: "<strong>Stopwatch op de telefoon</strong>: start hem als je begint en stop hem als je klaar bent",
+      h2: "<strong>Losse uren</strong> en <strong>afspraken</strong> met de hand invoeren, als je ze niet hebt bijgehouden met de timer",
+      proj_p: "Opdrachten die geen lessen en geen concerten zijn. Elk project heeft zijn eigen manier van factureren. Concerten en repetities van Muzikanten horen hier bij.",
+      g_pcobro: "Projecten: hoe je factureert",
+      p1: "<strong>Per uur</strong>: elk gewerkt uur wordt gefactureerd",
+      p2: "<strong>Vaste prijs</strong>: één prijs voor de hele opdracht",
+      p3: "<strong>Urenbudget</strong>: een afgesproken aantal uren",
+      p4: "<strong>Intern, zonder klant</strong>: werk voor jezelf, geen factuur aan iemand",
+      g_sueltas: "Losse facturen en uitgaven",
+      s1: "Een <strong>projectfactuur</strong> of een <strong>creditfactuur</strong>, zonder via het rooster te gaan",
+      s2: "<strong>Uitgaven</strong>: maak een foto van de bon en de app leest de gegevens voor je",
+      s3: "<strong>Bankafschrift</strong> om te zien wat je hebt betaald",
+      sh_p: "Wat beide kanten gebruiken: klanten, kilometers, BTW, betalingen, e-mails en instellingen.",
+      g_crm: "Klanten (CRM)", crm_p: "Het zijn allemaal klanten: wie betaalt.",
+      crm1: "<strong>Met leerlingen</strong>: de ouder die betaalt, met een of meer gekoppelde leerlingen. Van de leerling: naam, geboortedatum en cursus. En hoe hun lessen zijn ingedeeld (rooster en pakket)",
+      crm2: "<strong>Van projecten</strong>: het bedrijf of de persoon die je opdracht geeft, met hun projecten en factuurgegevens: adres, BTW en btw-nummer",
+      g_km: "Kilometers",
+      km1: "De reizen voor lessen komen uit de agenda",
+      km2: "De reizen voor concerten komen uit de uren",
+      km3: "Ze kunnen worden opgeteld bij de projectfactuur",
+      g_fin: "Financiën en BTW",
+      fin1: "De <strong>aangifte</strong> (BTW-aangifte) per kwartaal",
+      fin2: "De cijfers van het jaar en de <strong>openstaande betalingen</strong>",
+      g_cobros: "Betalingen",
+      cob1: "Betaling met <strong>iDEAL</strong>, via Mollie. Wordt ingeschakeld in Mollie en werkt ook in de testmodus",
+      g_mails: "E-mails",
+      m1: "Verzenden van <strong>facturen</strong> en <strong>herinneringen</strong>",
+      m2: "Een kopie van elke factuur voor je boekhouder",
+      g_ajustes: "Instellingen en gegevens",
+      aj1: "Logo, kleuren en taal van je bedrijf",
+      aj2: "Je <strong>Google</strong>-agenda, en de <strong>.ics</strong>-link voor elke andere agenda",
+      ask_h: "Iets niet waar je het verwachtte?",
+      ask_p: "Vertel het zoals je het zag: wat je wilde doen, op welk scherm je zat en wat er gebeurde. Dat helpt meer dan een algemene beschrijving.",
+      footer: "Gids voor Jizai voor wie de app uitprobeert. Bevat alleen wat al werkt."
+    },
+    it: {
+      ent_kicker: "Prima di iniziare",
+      ent_h2: "Accedere all'app",
+      ent_1: "Accedi con la tua email: ricevi un link di accesso. Non c'è password.",
+      ent_2: "Possono entrare solo le email nella lista degli invitati. Se il link non arriva, scrivimi.",
+      ent_3: "Per provare iDEAL: in <strong>Impostazioni → Fatturazione</strong> incolla la tua chiave di prova Mollie (quella che inizia con <strong>test_</strong>).",
+      probar_kicker: "Da dove iniziare",
+      probar_h2: "Cosa provare per primo",
+      probar_1: "Crea un allievo con il suo orario fisso.",
+      probar_2: "Genera le lezioni del mese e spostane una.",
+      probar_3: "Crea la fattura del mese e metti la tua email come pagante per riceverla.",
+      probar_4: "Guarda il portale famiglie: cosa vede una famiglia delle lezioni e delle fatture.",
+      probar_5: "Cronometra un'ora sul telefono.",
+      probar_6: "Incolla un messaggio su un concerto e controlla cosa capisce l'app.",
+      probar_7: "Fai una nota di credito per una fattura di prova.",
+      rut_kicker: "La tua routine",
+      rut_h2: "Mezz'ora al mese",
+      rut_p: "Non serve sapere di contabilità. Con questo ritmo l'amministrazione ti porta via circa 30 minuti al mese e niente resta a metà.",
+      rut1_time: "Ogni spesa · 10 secondi",
+      rut1_h: "Foto dello scontrino",
+      rut1_where: "Telefono → <b>+</b> → <b>Spesa</b>",
+      rut1_p: "Quando paghi qualcosa per lavoro, fai subito la foto dello scontrino. L'app lo legge e lo salva con la sua IVA. Niente più carte da conservare fino a fine trimestre.",
+      rut2_time: "Ogni settimana · 2 minuti",
+      rut2_h: "La settimana in ordine",
+      rut2_where: "Agenda → <b>Genera lezioni</b>",
+      rut2_p: "Guarda l'orario fisso: un allievo nuovo, uno che smette, un cambio d'orario. Poi genera le lezioni. Durante la settimana segni solo l'insolito: assenze e recuperi.",
+      rut3_time: "Una volta al mese · 15 minuti",
+      rut3_h: "Il giorno delle fatture",
+      rut3_where: "Finanze → <b>Banca e Mollie</b>, e Fatture",
+      rut3_1: "<strong>Carica il CSV della banca.</strong> Ogni incasso si abbina alla sua fattura, che risulta pagata con la data reale, e ogni pagamento alla sua spesa. Gli abbinamenti sicuri si confermano con un clic; controlli solo ciò che non torna.",
+      rut3_2: "<strong>Fattura il mese.</strong> Un clic crea una bozza per pagante con le lezioni del mese. Dagli un'occhiata.",
+      rut3_3: "<strong>Inviale tutte.</strong> Selezionale in Fatture e mandale per email in una volta.",
+      rut3_4: "<strong>Chi non ha pagato:</strong> filtra per «Scadute» e premi «Invia promemoria» per tutte.",
+      rut4_time: "Ogni trimestre e ogni anno",
+      rut4_h: "Tasse senza sorprese",
+      rut4_where: "Finanze → <b>IVA trimestrale</b> · <b>Dichiarazione annuale</b>",
+      rut4_p: "Siccome è tutto aggiornato, la dichiarazione IVA è già pronta: copi solo le caselle sul sito della Belastingdienst. Una volta all'anno, la dichiarazione annuale raccoglie le cifre dell'anno.",
+      rut_total: "In tutto: circa 25 minuti al mese, più le foto degli scontrini. Quello che risparmi è guardare l'app della banca e segnare le fatture pagate una per una.",
+      sum_kicker: "Riepilogo",
+      sum_h2: "Cosa funziona già nella beta",
+      e1: "Un orario fisso che genera le lezioni da sola, con stagioni e festività.",
+      e2: "Fatture per pagante, con IVA per riga, note di credito e invio con un clic.",
+      e3: "Pagamento con iDEAL su ogni fattura, tramite Mollie.",
+      e4: "Solleciti per le fatture scadute.",
+      e5: "Prenotazione pubblica per le nuove famiglie.",
+      e6: "Portale delle scuole e portale delle famiglie.",
+      e7: "Concerti e prove, con importazione da un messaggio.",
+      e8: "Cronometro delle ore e chilometri nella fattura del progetto.",
+      e9: "Clienti con allievi e clienti di progetti.",
+      e10: "IVA trimestrale e cifre dell'anno.",
+      e11: "Calendario Google e link .ics.",
+      later_kicker: "Dopo",
+      later_h2: "Miglioramenti in arrivo",
+      m_1: "Nascondere i rami che non usi.",
+      m_2: "Importare le lezioni già svolte prima di Jizai.",
+      m_3: "Trasformare una prova in orario fisso.",
+      m_4: "Lezioni singole alla fine del corso.",
+      m_5: "Un allievo che è anche cliente, con una sola anagrafica.",
+      m_6: "Avviso alla scuola quando si fattura il mese della sua sede.",
+      m_7: "Dominio proprio per le email.",
+      m_8: "Scaricare tutti i tuoi dati in uno ZIP.",
+      m_9: "Importare da Moneybird, e-Boekhouden e altri programmi.",
+      m_10: "Collegare Mollie con un clic, senza incollare la chiave.",
+      lim_kicker: "Problemi noti",
+      lim_h2: "Cose che so già che non funzionano",
+      lim_1: "«Rinvia email» non funziona sulle fatture già pagate.",
+      lim_2: "Le email possono finire nello spam.",
+      priv_kicker: "Privacy",
+      priv_h2: "I tuoi dati",
+      priv_1: "I tuoi allievi e clienti sono tuoi. Li vedi tu; le famiglie e le scuole vedono solo ciò che gli permetti di vedere.",
+      priv_2: "Per incassare e inviare le fatture, nome ed email del pagante vengono inviati a Mollie e al servizio email.",
+      priv_3: "Se vuoi smettere di usare l'app o cancellare i tuoi dati, scrivimi e lo facciamo.",
+      priv_4: "L'informativa completa sulla privacy è nella pagina privacy dell'app.",
+      fb_h: "Come scrivermi",
+      fb_p1: "Scrivimi su WhatsApp: <strong>[il tuo numero]</strong>.",
+      fb_p2: "Mandami un vocale con gli screenshot e raccontami con parole tue cosa volevi fare, cosa è successo e cosa cambieresti. Non serve che sia perfetto.",
+      title: "Guida a Jizai", lang_label: "Lingua",
+      h_title: "Guida a <span>Jizai</span>",
+      h_lead: "Per chi prova l'app. Qui trovi cosa funziona già, cosa fa ogni parte e come iniziare. La mappa qui sotto mostra dove si trova ogni cosa.",
+      s_kicker: "Primi passi", s_h2: "Inizia in tre passi",
+      s_p: "Con questi tre passi copri tutto il ciclo: un allievo, le sue lezioni del mese e la fattura inviata.",
+      st1_h: "Creare un allievo", st1_where: "Allievi → <b>Nuovo allievo</b>",
+      st1_p1: "Inserisci nome, data di nascita e corso. Se paga un genitore, crea quel cliente e collegagli l'allievo. Così la fattura va a chi paga.",
+      st1_p2: "Poi assegna il loro <strong>orario fisso</strong> e il pacchetto (della sede in cui danno lezione).",
+      st2_h: "Generare le lezioni del mese", st2_where: "Agenda → <b>Genera lezioni</b>",
+      st2_p1: "Con l'orario fisso impostato, un pulsante crea le lezioni della settimana o del mese. I giorni di chiusura (vacanze e festività della tua stagione) vengono saltati automaticamente.",
+      st2_p2: "Se qualcosa cambia, spostala, segnala un'assenza o recuperala dall'agenda.",
+      st3_h: "Fatturare e inviare", st3_where: "Fatture → <b>Crea bozza di fattura</b>",
+      st3_p1: "L'app crea il mese dall'orario con un clic: una fattura per pagante, con l'IVA (BTW) su ogni riga. Controlla la bozza.",
+      st3_p2: "Inviala via email dalla fattura con <strong>Invia via email</strong>. Se una fattura non viene pagata in tempo, l'app può inviare solleciti.",
+      m_kicker: "Dove si trova ogni cosa", m_h2: "La minimappa",
+      m_p: "Jizai ha cinque rami. Tocca una per scendere alla sua sezione.",
+      m_nav_aria: "Rami di Jizai", m_root_span: "l'app per chi vive di musica",
+      b_qv: "Cosa vedi", b_prof: "Insegnanti", b_mus: "Musicisti", b_proj: "Progetti e freelance", b_shared: "Condiviso",
+      qv_span: "Scegli quali rami vedi: Insegnanti, Musicisti o entrambi.", qv_small: "In arrivo",
+      br_prof_span: "Allievi, agenda, lezioni, fatture e i portali per scuole e famiglie.",
+      br_mus_span: "Concerti e prove, con prezzo e fattura; e le tue ore lavorate.",
+      br_proj_span: "Incarichi a ore, a prezzo fisso o interni; fatture singole e spese.",
+      br_shared_span: "Clienti, chilometri, IVA (BTW), incassi, email e impostazioni.",
+      rama1: "Ramo 1", rama2: "Ramo 2", rama3: "Ramo 3", rama4: "Ramo 4",
+      prof_p: "Le tue lezioni con allievi di più scuole e famiglie: quando insegni, dove, cosa si fattura e chi lo riceve.",
+      g_agenda: "Agenda e lezioni",
+      a1: "<strong>Orario fisso</strong>: l'orario settimanale dell'allievo. Crea da sola le sue lezioni <span class=\"t-auto\">Automatico</span>",
+      a2: "Spostare una lezione, segnare un'<strong>assenza</strong> o fare un <strong>recupero</strong>",
+      a3: "Generare le lezioni della settimana o del mese con un pulsante <span class=\"t-auto\">Automatico</span>",
+      a4: "<strong>Stagioni</strong> (corsi) con le loro date. La generazione salta vacanze e festività <span class=\"t-auto\">Automatico</span>",
+      a5: "Ogni lezione ha uno stato: <strong>svolta</strong>, <strong>no-show</strong>, annullata dall'allievo o annullata da te. Puoi scrivere una nota di presenza",
+      a6: "<strong>Sedi</strong>: una scuola (con il suo portale) o lezioni private. Ogni <strong>pacchetto</strong> appartiene a una sede",
+      a7: "<strong>Appuntamenti singoli</strong>, orari offerti nella prenotazione e blocchi occupati del tuo calendario",
+      a8: "<strong>Prenotazione pubblica</strong>: le nuove famiglie prenotano la prova o un colloquio e compilano da sole i dati <span class=\"t-auto\">Automatico</span>",
+      g_fact: "Fatturazione delle lezioni",
+      f1: "<strong>Generare il mese dall'orario</strong>: tutto il mese esce con un clic <span class=\"t-auto\">Automatico</span>",
+      f2: "<strong>Fatture</strong>: una fattura per pagante, con l'IVA (BTW) su ogni riga (e per età, se l'allievo è impostato così). Puoi anche fare <strong>note di credito</strong> per annullare una fattura",
+      f3: "<strong>Invio</strong>: con un clic partono tutte le fatture pronte insieme. Ognuna con la sua email personalizzata, il suo link di pagamento e il suo PDF <span class=\"t-auto\">Automatico</span>",
+      f4: "<strong>Solleciti</strong> per le fatture scadute",
+      f5: "<strong>Pagamento con iDEAL</strong> dal link della fattura, con Mollie attivato",
+      g_school: "Portale delle scuole",
+      sc_p: "Per le scuole con cui lavori. Due parti: ciò che arriva dalla scuola e ciò che la scuola vede.",
+      sc1: "La scuola manda un allievo. Tu lo <strong>accetti o lo rifiuti</strong>",
+      sc2: "La scuola vede i suoi insegnanti collegati, con la loro sede",
+      sc3: "Vede le <strong>lezioni svolte per mese e per allievo</strong>, senza doverti chiedere elenchi <span class=\"t-auto\">Automatico</span>",
+      sc4: "Vede quali lezioni sono già fatturate",
+      sc5: "Inviti i coordinatori della scuola via email",
+      g_family: "Portale delle famiglie",
+      fa_p: "Per le famiglie dei tuoi allievi. Due parti: le lezioni dell'allievo e le sue fatture.",
+      fa1: "Vedono le <strong>lezioni svolte</strong>, con la tua nota, e le <strong>prossime</strong> con l'orario",
+      fa2: "La famiglia segnala le sue <strong>assenze</strong>",
+      fa3: "Le lezioni vanno nel loro calendario",
+      fa4: "Vedono le loro <strong>fatture</strong> e il loro stato, e possono pagare con iDEAL dalla fattura",
+      mus_p: "Cosa suoni e quanto guadagni, quando lavori come musicista e non come insegnante.",
+      g_conc: "Concerti e prove",
+      conc_p: "La parte più importante per te come musicista. Ogni concerto e ogni prova dipende da un progetto in Progetti.",
+      c1: "<strong>Concerti</strong>: date e serate, con il <strong>compenso e il viaggio</strong> (il viaggio con IVA/BTW al 9%). Puoi importare le serate da un foglio di calcolo",
+      c2: "<strong>Prove</strong>: ognuna con il suo prezzo. Se una prova è inclusa nel concerto, metti 0 €",
+      c3: "<strong>Importare da un messaggio</strong>: incolli un'email, un WhatsApp o uno screenshot, e l'app legge i concerti e le prove con data, ora e luogo <span class=\"t-auto\">Automatico</span>",
+      c4: "L'app collega ciò che importi al progetto del cliente, oppure crea il cliente con i suoi prezzi. <strong>Controlli le date prima di salvare</strong>",
+      c5: "<strong>Fattura del progetto</strong>: concerti, prove e chilometri in un'unica fattura, a fine mese o a fine progetto <span class=\"t-auto\">Automatico</span>",
+      g_hours: "Ore lavorate",
+      h1: "<strong>Cronometro sul telefono</strong>: lo avvii quando inizi e lo fermi quando finisci",
+      h2: "Registrare a mano <strong>ore singole</strong> e <strong>appuntamenti</strong>, se non li hai cronometrati",
+      proj_p: "Incarichi che non sono né lezioni né concerti. Ogni progetto ha il suo modo di fatturare. Concerti e prove di Musicisti dipendono da qui.",
+      g_pcobro: "Progetti: come si fattura",
+      p1: "<strong>A ore</strong>: ogni ora lavorata viene fatturata",
+      p2: "<strong>Prezzo fisso</strong>: un prezzo per tutto l'incarico",
+      p3: "<strong>Budget di ore</strong>: un numero di ore concordato",
+      p4: "<strong>Interno, senza cliente</strong>: lavoro per te, nessuna fattura a nessuno",
+      g_sueltas: "Fatture singole e spese",
+      s1: "Una <strong>fattura di progetto</strong> o una <strong>nota di credito</strong>, senza passare dall'orario",
+      s2: "<strong>Spese</strong>: fai una foto alla ricevuta e l'app legge i dati per te",
+      s3: "<strong>Estratto conto</strong> per vedere cosa hai pagato",
+      sh_p: "Ciò che usano entrambe le parti: clienti, chilometri, IVA (BTW), incassi, email e impostazioni.",
+      g_crm: "Clienti (CRM)", crm_p: "Sono tutti clienti: chi paga.",
+      crm1: "<strong>Con allievi</strong>: il genitore che paga, con uno o più allievi collegati. Dell'allievo: nome, data di nascita e corso. E come sono organizzate le sue lezioni (orario e pacchetto)",
+      crm2: "<strong>Di progetti</strong>: l'azienda o la persona che ti commissiona, con i suoi progetti e i dati di fatturazione: indirizzo, IVA (BTW) e numero di partita IVA",
+      g_km: "Chilometri",
+      km1: "I viaggi delle lezioni vengono dall'agenda",
+      km2: "I viaggi dei concerti vengono dalle ore",
+      km3: "Possono essere aggiunti alla fattura di un progetto",
+      g_fin: "Finanze e IVA (BTW)",
+      fin1: "La <strong>aangifte</strong> (dichiarazione IVA) di ogni trimestre",
+      fin2: "I numeri dell'anno e gli <strong>incassi in sospeso</strong>",
+      g_cobros: "Incassi",
+      cob1: "Pagamento con <strong>iDEAL</strong>, con Mollie. Si attiva in Mollie e funziona anche in modalità di prova",
+      g_mails: "Email",
+      m1: "Invio di <strong>fatture</strong> e <strong>solleciti</strong>",
+      m2: "Una copia di ogni fattura per il tuo commercialista",
+      g_ajustes: "Impostazioni e dati",
+      aj1: "Logo, colori e lingua della tua azienda",
+      aj2: "Il tuo calendario <strong>Google</strong>, e il link <strong>.ics</strong> per qualsiasi altro calendario",
+      ask_h: "Qualcosa non dove te lo aspettavi?",
+      ask_p: "Raccontalo come l'hai visto: cosa volevi fare, in quale schermata eri e cosa è successo. Aiuta più di una descrizione generale.",
+      footer: "Guida di Jizai per chi prova l'app. Riporta solo ciò che funziona già."
+    }
+  };
+
+  var root = document.documentElement;
+  var buttons = document.querySelectorAll("[data-lang-btn]");
+
+  /* Pinta los textos del idioma elegido y marca el botón activo */
+  function setLang(code) {
+    if (!T[code]) code = "es";
+    var dict = T[code];
+    root.lang = code;
+    document.title = dict.title;
+    document.querySelectorAll("[data-i18n]").forEach(function (el) {
+      var v = dict[el.getAttribute("data-i18n")];
+      if (v != null) el.innerHTML = v;
+    });
+    document.querySelectorAll("[data-i18n-aria]").forEach(function (el) {
+      el.setAttribute("aria-label", dict[el.getAttribute("data-i18n-aria")]);
+    });
+    buttons.forEach(function (b) {
+      b.setAttribute("aria-pressed", String(b.getAttribute("data-lang-btn") === code));
+    });
+    try { localStorage.setItem("jizai-guia-idioma", code); } catch (e) { /* sin almacenamiento: no pasa nada */ }
+  }
+
+  /* Idioma guardado, o el del navegador si es uno de los cuatro, o español */
+  function startLang() {
+    try {
+      var saved = localStorage.getItem("jizai-guia-idioma");
+      if (saved && T[saved]) return saved;
+    } catch (e) { /* sin almacenamiento */ }
+    var nav = (navigator.language || "es").slice(0, 2).toLowerCase();
+    return T[nav] ? nav : "es";
+  }
+
+  buttons.forEach(function (b) {
+    b.addEventListener("click", function () { setLang(b.getAttribute("data-lang-btn")); });
+  });
+  setLang(startLang());
+})();
+</script>
+</body>
+</html>
