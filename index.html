@@ -177,6 +177,38 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
   .branch.qv { border-left-style: dashed; border-left-width: 3px; }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+/* Portada y vistas: una guía por vez, con botón de volver */
+.vista { display: none; gap: 40px; }
+.vista.on { display: grid; }
+.elige { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; }
+.gran { text-decoration: none; border-radius: 28px; padding: 26px 24px 22px; display: grid; gap: 10px; align-content: start; min-height: 220px; color: var(--fg);
+  background: linear-gradient(135deg, var(--glass-a), var(--glass-b)); -webkit-backdrop-filter: blur(22px) saturate(1.4); backdrop-filter: blur(22px) saturate(1.4);
+  border: 1px solid var(--glass-line); border-top: 9px solid var(--c); box-shadow: inset 0 1px 0 var(--glass-hi), 0 24px 60px -24px var(--glass-shadow); transition: transform .15s ease; }
+.gran:hover { transform: translateY(-3px); }
+.gran:focus-visible { outline: 2px solid var(--dot); outline-offset: 4px; }
+.gran h2 { font-size: clamp(1.8rem, 5vw, 2.3rem); }
+.gran p { color: var(--muted); }
+.gran .go { margin-top: auto; font-weight: 800; color: var(--c); }
+.g-clases { --c: var(--brezo); } .g-conc { --c: var(--ocre); } .g-proj { --c: var(--musgo); }
+.todos-a { font-weight: 700; color: var(--fg); text-decoration: underline; text-underline-offset: 4px; justify-self: start; }
+.topbar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+.volver { text-decoration: none; font-weight: 800; font-size: 14px; color: var(--fg); background: var(--glass-a); border: 1px solid var(--glass-line); border-radius: 999px; padding: 8px 16px; }
+.volver:hover { background: var(--fg); color: var(--bg); }
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.tabs a { text-decoration: none; font-size: 13px; font-weight: 700; color: var(--muted); padding: 6px 12px; border-radius: 999px; }
+.tabs a[aria-current="page"] { color: var(--bg); background: var(--c, var(--fg)); }
+.tabs a:hover { color: var(--fg); }
+.tabs a[aria-current="page"]:hover { color: var(--bg); }
+.case-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.case-grid .step h2 { font-size: 1.15rem; }
+.steps.pasos { grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
+.step ol { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
+.step ol li { padding-left: 4px; }
+.step ol li::before { display: none; }
+.note { font-size: 13px; }
+.nolist li::before { display: none; }
+.group ol.nolist { list-style: decimal; }
 </style>
 </head>
 <body>
@@ -191,8 +223,17 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
 </svg>
 
 <div class="wrap">
+  <nav class="lang" aria-label="Idioma">
+    <span data-i18n="lang_label">Idioma</span>
+    <button type="button" data-lang-btn="es" aria-pressed="true">Español</button>
+    <button type="button" data-lang-btn="en" aria-pressed="false">English</button>
+    <button type="button" data-lang-btn="nl" aria-pressed="false">Nederlands</button>
+    <button type="button" data-lang-btn="it" aria-pressed="false">Italiano</button>
+  </nav>
+  <main>
 
-  <!-- CABECERA -->
+<div class="vista on" id="v-inicio">
+    <!-- CABECERA -->
   <header class="hero">
     <svg viewBox="0 0 520 200" role="img" aria-label="jizai en burbuja blanca inclinada con contorno negro">
       <text x="260" y="142" text-anchor="middle" font-family="Archivo Black, Arial Black, sans-serif" font-size="128" fill="#FFFFFF" stroke="#0E0E0E" stroke-width="20" paint-order="stroke" transform="rotate(-6 260 110)">jizai</text>
@@ -203,141 +244,30 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
     </div>
     <p data-i18n="h_lead">Para quien prueba la app. Aquí está lo que ya funciona, qué hace cada parte y cómo empezar. El mapa de abajo te enseña dónde está cada cosa.</p>
   </header>
-
-  <!-- IDIOMA -->
-  <nav class="lang" aria-label="Idioma">
-    <span data-i18n="lang_label">Idioma</span>
-    <button type="button" data-lang-btn="es" aria-pressed="true">Español</button>
-    <button type="button" data-lang-btn="en" aria-pressed="false">English</button>
-    <button type="button" data-lang-btn="nl" aria-pressed="false">Nederlands</button>
-    <button type="button" data-lang-btn="it" aria-pressed="false">Italiano</button>
-  </nav>
-
-  <!-- ENTRAR -->
-  <section id="entrar">
-    <h3 data-i18n="ent_kicker">Antes de empezar</h3>
-    <h2 data-i18n="ent_h2">Entrar en la app</h2>
-    <div class="group">
-        <ul class="shared">
-          <li data-i18n="ent_1">Entras con tu correo: te llega un enlace de acceso. No hay contraseña.</li>
-          <li data-i18n="ent_2">Solo entran los correos de la lista de invitados. Si no te llega el enlace, escríbeme.</li>
-          <li data-i18n="ent_3">Para probar iDEAL: en <strong>Ajustes → Facturación</strong> pega tu clave de prueba de Mollie (la que empieza por <strong>test_</strong>).</li>
-        </ul>
-      </div>
+  <section>
+    <h3 data-i18n="p_ask_kicker"></h3>
+    <h2 data-i18n="p_ask_h2"></h2>
+    <p data-i18n="p_ask_p"></p>
+    <nav class="elige" aria-label="Guías">
+      <a class="gran g-clases" href="#clases"><h2 data-i18n="p_clases_h"></h2><p data-i18n="p_clases_p"></p><span class="go" data-i18n="abrir"></span></a>
+      <a class="gran g-conc" href="#conciertos"><h2 data-i18n="p_conc_h"></h2><p data-i18n="p_conc_p"></p><span class="go" data-i18n="abrir"></span></a>
+      <a class="gran g-proj" href="#proyectos"><h2 data-i18n="p_proj_h"></h2><p data-i18n="p_proj_p"></p><span class="go" data-i18n="abrir"></span></a>
+    </nav>
+    <a class="todos-a" href="#todos" data-i18n="p_todos_a"></a>
   </section>
+</div>
 
-  <!-- EMPEZAR -->
-  <section id="empezar">
-    <h3 data-i18n="s_kicker">Primeros pasos</h3>
-    <h2 data-i18n="s_h2">Empieza en tres pasos</h2>
-    <p data-i18n="s_p">Con estos tres pasos tienes el ciclo entero: un alumno, sus clases del mes y la factura enviada.</p>
-    <div class="steps">
-      <article class="step">
-        <span class="num">1<svg class="ring" aria-hidden="true" viewBox="0 0 200 80" preserveAspectRatio="none"><path d="M30 12 C90 -4 190 6 194 38 C198 70 110 82 50 74 C6 68 2 40 14 24 C24 12 60 6 96 8" filter="url(#trazo-a-mano)"/></svg></span>
-        <h2 data-i18n="st1_h">Crear un alumno</h2>
-        <p class="where" data-i18n="st1_where">Alumnos → <b>Nuevo alumno</b></p>
-        <p data-i18n="st1_p1">Pon su nombre, su fecha de nacimiento y su curso. Si lo paga un padre o una madre, crea ese cliente y enlaza al alumno con él. Así la factura va a quien paga.</p>
-        <p data-i18n="st1_p2">Después dale su <strong>horario fijo</strong> y su paquete (de la sede donde da clase).</p>
-      </article>
-      <article class="step">
-        <span class="num">2<svg class="ring" aria-hidden="true" viewBox="0 0 200 80" preserveAspectRatio="none"><path d="M30 12 C90 -4 190 6 194 38 C198 70 110 82 50 74 C6 68 2 40 14 24 C24 12 60 6 96 8" filter="url(#trazo-a-mano)"/></svg></span>
-        <h2 data-i18n="st2_h">Generar las clases del mes</h2>
-        <p class="where" data-i18n="st2_where">Agenda → <b>Generar clases</b></p>
-        <p data-i18n="st2_p1">Con el horario fijo ya puesto, un botón crea las clases de la semana o del mes. Los días cerrados (vacaciones y festivos de tu temporada) se saltan solos.</p>
-        <p data-i18n="st2_p2">Si algo cambia, muévela, márcala como ausencia o recupérala desde la agenda.</p>
-      </article>
-      <article class="step">
-        <span class="num">3<svg class="ring" aria-hidden="true" viewBox="0 0 200 80" preserveAspectRatio="none"><path d="M30 12 C90 -4 190 6 194 38 C198 70 110 82 50 74 C6 68 2 40 14 24 C24 12 60 6 96 8" filter="url(#trazo-a-mano)"/></svg></span>
-        <h2 data-i18n="st3_h">Facturar y enviar</h2>
-        <p class="where" data-i18n="st3_where">Facturas → <b>Crear borrador de factura</b></p>
-        <p data-i18n="st3_p1">La app saca el mes del horario con un clic: una factura por pagador, con el IVA de cada línea. Revisa el borrador.</p>
-        <p data-i18n="st3_p2">Envíala por correo desde la factura con <strong>Enviar por email</strong>. Si la factura no se paga a tiempo, la app puede enviar recordatorios.</p>
-      </article>
-    </div>
-  </section>
-
-  <!-- RUTINA: la forma práctica de usarla, con el tiempo de cada cosa -->
-  <section id="rutina">
-    <h3 data-i18n="rut_kicker">Tu rutina</h3>
-    <h2 data-i18n="rut_h2">Media hora al mes</h2>
-    <p data-i18n="rut_p">No hace falta saber contabilidad. Con este ritmo, la administración te lleva unos 30 minutos al mes y nada se queda a medias.</p>
-    <div class="steps rutina">
-      <article class="step">
-        <p class="time" data-i18n="rut1_time">Cada gasto · 10 segundos</p>
-        <h2 data-i18n="rut1_h">Foto del ticket</h2>
-        <p class="where" data-i18n="rut1_where">Móvil → <b>+</b> → <b>Gasto</b></p>
-        <p data-i18n="rut1_p">Cuando pagas algo del trabajo, haz la foto del ticket en el momento. La app lo lee y lo guarda con su IVA. Nada de guardar papeles hasta final de trimestre.</p>
-      </article>
-      <article class="step">
-        <p class="time" data-i18n="rut2_time">Cada semana · 2 minutos</p>
-        <h2 data-i18n="rut2_h">La semana al día</h2>
-        <p class="where" data-i18n="rut2_where">Agenda → <b>Generar clases</b></p>
-        <p data-i18n="rut2_p">Mira el horario fijo: un alumno nuevo, uno que lo deja, un cambio de hora. Después genera las clases. Durante la semana solo marcas lo raro: ausencias y recuperaciones.</p>
-      </article>
-      <article class="step">
-        <p class="time" data-i18n="rut3_time">Una vez al mes · 15 minutos</p>
-        <h2 data-i18n="rut3_h">El día de facturar</h2>
-        <p class="where" data-i18n="rut3_where">Finanzas → <b>Banco y Mollie</b>, y Facturas</p>
-        <ul class="rut-list">
-          <li data-i18n="rut3_1"><strong>Sube el CSV del banco.</strong> Cada cobro se casa con su factura, que queda pagada con la fecha real, y cada pago con su gasto. Lo seguro se confirma de un clic; solo revisas lo que no encaja.</li>
-          <li data-i18n="rut3_2"><strong>Facturar el mes.</strong> Un clic saca un borrador por pagador con las clases del mes. Échales un vistazo.</li>
-          <li data-i18n="rut3_3"><strong>Envíalos todos.</strong> Selecciónalos en Facturas y mándalos por email a la vez.</li>
-          <li data-i18n="rut3_4"><strong>Las que no han pagado:</strong> filtra por «Vencidas» y pulsa «Enviar recordatorio» para todas.</li>
-        </ul>
-      </article>
-      <article class="step">
-        <p class="time" data-i18n="rut4_time">Cada trimestre y cada año</p>
-        <h2 data-i18n="rut4_h">Impuestos sin sustos</h2>
-        <p class="where" data-i18n="rut4_where">Finanzas → <b>BTW trimestral</b> · <b>Declaración anual</b></p>
-        <p data-i18n="rut4_p">Como todo está al día, la declaración de BTW ya está hecha: solo copias las casillas en la web de la Belastingdienst. Una vez al año, la declaración anual junta las cifras del año.</p>
-      </article>
-    </div>
-    <p class="rut-total" data-i18n="rut_total">En total: unos 25 minutos al mes, más las fotos de los tickets. Lo que te ahorras es mirar la app del banco y marcar factura por factura a mano.</p>
-  </section>
-
-  <!-- PROBAR -->
-  <section id="probar">
-    <h3 data-i18n="probar_kicker">Por dónde empezar</h3>
-    <h2 data-i18n="probar_h2">Qué probar primero</h2>
-    <div class="group">
-        <ul class="prof">
-          <li data-i18n="probar_1">Crea un alumno con su horario fijo.</li>
-          <li data-i18n="probar_2">Genera las clases del mes y mueve una.</li>
-          <li data-i18n="probar_3">Crea la factura del mes y pon tu propio correo como pagador para recibirla.</li>
-          <li data-i18n="probar_4">Mira el portal de familias: qué ve una familia de sus clases y facturas.</li>
-          <li data-i18n="probar_5">Cronometra una hora en el móvil.</li>
-          <li data-i18n="probar_6">Pega un mensaje con un concierto y revisa lo que la app entiende.</li>
-          <li data-i18n="probar_7">Haz una factura de abono de una factura de prueba.</li>
-        </ul>
-      </div>
-  </section>
-
-  <!-- MINIMAPA -->
-  <section id="mapa">
-    <h3 data-i18n="m_kicker">Dónde está cada cosa</h3>
-    <h2 data-i18n="m_h2">El minimapa</h2>
-    <svg class="hand-mark" viewBox="0 0 600 18" preserveAspectRatio="none" aria-hidden="true" filter="url(#trazo-a-mano)"><path d="M4 11 C120 3 260 15 380 8 S560 6 596 10"/></svg>
-    <p data-i18n="m_p">Jizai tiene cinco ramas. Pulsa una para bajar a su sección.</p>
-    <div class="map">
-      <div class="map-root"><b>Jizai</b><span data-i18n="m_root_span">la app de una persona que vive de la música</span></div>
-      <nav class="map-branches" aria-label="Ramas de Jizai" data-i18n-aria="m_nav_aria">
-        <div class="branch b-qv qv"><h2 data-i18n="b_qv">Qué ves</h2><span data-i18n="qv_span">Elegir qué ramas ves: Profesores, Músicos o las dos.</span><small data-i18n="qv_small">Llegará más adelante</small></div>
-        <a class="branch b-prof" href="#profesores"><h2 data-i18n="b_prof">Profesores</h2><span data-i18n="br_prof_span">Alumnos, agenda, clases, facturas y los portales de escuelas y familias.</span></a>
-        <a class="branch b-mus" href="#musicos"><h2 data-i18n="b_mus">Músicos</h2><span data-i18n="br_mus_span">Conciertos y ensayos, con su precio y su factura; y tus horas trabajadas.</span></a>
-        <a class="branch b-proj" href="#proyectos"><h2 data-i18n="b_proj">Proyectos y freelancing</h2><span data-i18n="br_proj_span">Encargos por horas, precio cerrado o internos; facturas sueltas y gastos.</span></a>
-        <a class="branch b-shared" href="#compartido"><h2 data-i18n="b_shared">Compartido</h2><span data-i18n="br_shared_span">Clientes, kilómetros, BTW, cobros, correos y ajustes.</span></a>
-      </nav>
-    </div>
-  </section>
-
-  <!-- PROFESORES -->
-  <section id="profesores">
-    <div class="branch-head prof">
-      <h3 data-i18n="rama1">Rama 1</h3>
-      <h2 data-i18n="b_prof">Profesores</h2>
-      <p data-i18n="prof_p">Tus clases con alumnos de varias escuelas y familias: cuándo das clase, dónde, qué se factura y quién lo recibe.</p>
-    </div>
-    <div class="groups">
+<div class="vista" id="v-clases">
+  <nav class="topbar" aria-label="Guías"><a class="volver" href="#inicio" data-i18n="volver">← Elegir otra guía</a><span class="tabs"><a href="#clases" data-i18n="p_clases_h">Clases</a><a href="#conciertos" data-i18n="p_conc_h">Conciertos</a><a href="#proyectos" data-i18n="p_proj_h">Proyectos</a><a href="#todos" data-i18n="td_h">Para todos</a></span></nav>
+  <div class="branch-head prof"><h3 data-i18n="guia_k"></h3><h2 data-i18n="p_clases_h"></h2><p data-i18n="cl_lead"></p></div>
+  <section><h3 data-i18n="cl_q_k"></h3><h2 data-i18n="cl_q_h"></h2><p data-i18n="cl_q_p"></p><div class="case-grid"><article class="step"><h2 data-i18n="cl_t1_h"></h2><p data-i18n="cl_t1_p"></p></article><article class="step"><h2 data-i18n="cl_t2_h"></h2><p data-i18n="cl_t2_p"></p></article><article class="step"><h2 data-i18n="cl_t3_h"></h2><p data-i18n="cl_t3_p"></p></article></div></section>
+  <section><h3 data-i18n="cl_s_k"></h3><h2 data-i18n="cl_s_h"></h2><div class="steps pasos"><article class="step"><span class="num">1<svg class="ring" aria-hidden="true" viewBox="0 0 200 80" preserveAspectRatio="none"><path d="M30 12 C90 -4 190 6 194 38 C198 70 110 82 50 74 C6 68 2 40 14 24 C24 12 60 6 96 8" filter="url(#trazo-a-mano)"/></svg></span><h2 data-i18n="cl_s1_h"></h2><p class="where" data-i18n="cl_s1_w"></p><p data-i18n="cl_s1_p"></p></article><article class="step"><span class="num">2<svg class="ring" aria-hidden="true" viewBox="0 0 200 80" preserveAspectRatio="none"><path d="M30 12 C90 -4 190 6 194 38 C198 70 110 82 50 74 C6 68 2 40 14 24 C24 12 60 6 96 8" filter="url(#trazo-a-mano)"/></svg></span><h2 data-i18n="cl_s2_h"></h2><p class="where" data-i18n="cl_s1_w"></p><p data-i18n="cl_s2_p"></p></article><article class="step"><span class="num">3<svg class="ring" aria-hidden="true" viewBox="0 0 200 80" preserveAspectRatio="none"><path d="M30 12 C90 -4 190 6 194 38 C198 70 110 82 50 74 C6 68 2 40 14 24 C24 12 60 6 96 8" filter="url(#trazo-a-mano)"/></svg></span><h2 data-i18n="cl_s3_h"></h2><p class="where" data-i18n="cl_s3_w"></p><p data-i18n="cl_s3_p"></p></article><article class="step"><span class="num">4<svg class="ring" aria-hidden="true" viewBox="0 0 200 80" preserveAspectRatio="none"><path d="M30 12 C90 -4 190 6 194 38 C198 70 110 82 50 74 C6 68 2 40 14 24 C24 12 60 6 96 8" filter="url(#trazo-a-mano)"/></svg></span><h2 data-i18n="cl_s4_h"></h2><p class="where" data-i18n="cl_s4_w"></p><p data-i18n="cl_s4_p"></p></article><article class="step"><span class="num">5<svg class="ring" aria-hidden="true" viewBox="0 0 200 80" preserveAspectRatio="none"><path d="M30 12 C90 -4 190 6 194 38 C198 70 110 82 50 74 C6 68 2 40 14 24 C24 12 60 6 96 8" filter="url(#trazo-a-mano)"/></svg></span><h2 data-i18n="cl_s5_h"></h2><p class="where" data-i18n="cl_s5_w"></p><p data-i18n="cl_s5_p"></p><ul class="prof"><li data-i18n="cl_g1"></li><li data-i18n="cl_g2"></li></ul><p class="note" data-i18n="cl_s5_n"></p></article><article class="step"><span class="num">6<svg class="ring" aria-hidden="true" viewBox="0 0 200 80" preserveAspectRatio="none"><path d="M30 12 C90 -4 190 6 194 38 C198 70 110 82 50 74 C6 68 2 40 14 24 C24 12 60 6 96 8" filter="url(#trazo-a-mano)"/></svg></span><h2 data-i18n="cl_s6_h"></h2><p class="where" data-i18n="st2_where"></p><p data-i18n="cl_s6_p"></p></article><article class="step"><span class="num">7<svg class="ring" aria-hidden="true" viewBox="0 0 200 80" preserveAspectRatio="none"><path d="M30 12 C90 -4 190 6 194 38 C198 70 110 82 50 74 C6 68 2 40 14 24 C24 12 60 6 96 8" filter="url(#trazo-a-mano)"/></svg></span><h2 data-i18n="cl_s7_h"></h2><p class="where" data-i18n="cl_s7_w"></p><p data-i18n="cl_s7_p"></p></article></div></section>
+  <section><h3 data-i18n="cl_f_k"></h3><h2 data-i18n="cl_f_h"></h2><div class="group"><ul class="prof"><li data-i18n="cl_f1"></li><li data-i18n="cl_f2"></li><li data-i18n="cl_f3"></li><li data-i18n="cl_f4"></li><li data-i18n="cl_f5"></li></ul></div></section>
+  <section><h3 data-i18n="cl_c_k"></h3><h2 data-i18n="cl_c_h"></h2><div class="group"><ul class="prof"><li data-i18n="cl_c1"></li><li data-i18n="cl_c2"></li><li data-i18n="cl_c3"></li><li data-i18n="cl_c4"></li></ul></div></section>
+  <section><h3 data-i18n="cl_i_k"></h3><h2 data-i18n="cl_i_h"></h2><div class="group"><ul class="prof"><li data-i18n="cl_i1"></li><li data-i18n="cl_i2"></li></ul></div></section>
+  <section><h3 data-i18n="cl_ex_k"></h3><h2 data-i18n="cl_ex_h"></h2><p data-i18n="cl_ex_p"></p><div class="group"><ol class="prof nolist" style="margin:0;padding-left:20px;display:grid;gap:8px;color:var(--muted)"><li data-i18n="cl_ex1" style="padding-left:4px"></li><li data-i18n="cl_ex2" style="padding-left:4px"></li><li data-i18n="cl_ex3" style="padding-left:4px"></li><li data-i18n="cl_ex4" style="padding-left:4px"></li><li data-i18n="cl_ex5" style="padding-left:4px"></li></ol></div></section>
+  <section><h3 data-i18n="cl_all_k"></h3><h2 data-i18n="cl_all_h"></h2>
+        <div class="groups">
       <div class="group">
         <h3 data-i18n="g_agenda">Agenda y clases</h3>
         <ul class="prof">
@@ -384,15 +314,14 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
       </div>
     </div>
   </section>
+</div>
 
-  <!-- MÚSICOS -->
-  <section id="musicos">
-    <div class="branch-head mus">
-      <h3 data-i18n="rama2">Rama 2</h3>
-      <h2 data-i18n="b_mus">Músicos</h2>
-      <p data-i18n="mus_p">Lo que tocas y cuánto cobras, para cuando trabajas como músico y no como profesor.</p>
-    </div>
-    <div class="groups">
+<div class="vista" id="v-conciertos">
+  <nav class="topbar" aria-label="Guías"><a class="volver" href="#inicio" data-i18n="volver">← Elegir otra guía</a><span class="tabs"><a href="#clases" data-i18n="p_clases_h">Clases</a><a href="#conciertos" data-i18n="p_conc_h">Conciertos</a><a href="#proyectos" data-i18n="p_proj_h">Proyectos</a><a href="#todos" data-i18n="td_h">Para todos</a></span></nav>
+  <div class="branch-head mus"><h3 data-i18n="guia_k"></h3><h2 data-i18n="p_conc_h"></h2><p data-i18n="cn_lead"></p></div>
+  <section><h3 data-i18n="cl_s_k"></h3><h2 data-i18n="cl_s_h"></h2><div class="steps pasos"><article class="step"><span class="num">1<svg class="ring" aria-hidden="true" viewBox="0 0 200 80" preserveAspectRatio="none"><path d="M30 12 C90 -4 190 6 194 38 C198 70 110 82 50 74 C6 68 2 40 14 24 C24 12 60 6 96 8" filter="url(#trazo-a-mano)"/></svg></span><h2 data-i18n="cn_s1_h"></h2><p class="where" data-i18n="cn_s1_w"></p><p data-i18n="cn_s1_p"></p></article><article class="step"><span class="num">2<svg class="ring" aria-hidden="true" viewBox="0 0 200 80" preserveAspectRatio="none"><path d="M30 12 C90 -4 190 6 194 38 C198 70 110 82 50 74 C6 68 2 40 14 24 C24 12 60 6 96 8" filter="url(#trazo-a-mano)"/></svg></span><h2 data-i18n="cn_s2_h"></h2><p class="where" data-i18n="cn_s2_w"></p><p data-i18n="cn_s2_p"></p></article><article class="step"><span class="num">3<svg class="ring" aria-hidden="true" viewBox="0 0 200 80" preserveAspectRatio="none"><path d="M30 12 C90 -4 190 6 194 38 C198 70 110 82 50 74 C6 68 2 40 14 24 C24 12 60 6 96 8" filter="url(#trazo-a-mano)"/></svg></span><h2 data-i18n="cn_s3_h"></h2><p class="where" data-i18n="cn_s3_w"></p><p data-i18n="cn_s3_p"></p></article><article class="step"><span class="num">4<svg class="ring" aria-hidden="true" viewBox="0 0 200 80" preserveAspectRatio="none"><path d="M30 12 C90 -4 190 6 194 38 C198 70 110 82 50 74 C6 68 2 40 14 24 C24 12 60 6 96 8" filter="url(#trazo-a-mano)"/></svg></span><h2 data-i18n="cn_s4_h"></h2><p class="where" data-i18n="cn_s4_w"></p><p data-i18n="cn_s4_p"></p></article></div></section>
+  <section><h3 data-i18n="cl_all_k"></h3><h2 data-i18n="cl_all_h"></h2>
+        <div class="groups">
       <div class="group">
         <h3 data-i18n="g_conc">Conciertos y ensayos</h3>
         <p data-i18n="conc_p">Lo más importante para ti como músico. Cada concierto y cada ensayo cuelga de un proyecto de Proyectos.</p>
@@ -413,15 +342,14 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
       </div>
     </div>
   </section>
+</div>
 
-  <!-- PROYECTOS Y FREELANCING -->
-  <section id="proyectos">
-    <div class="branch-head proj">
-      <h3 data-i18n="rama3">Rama 3</h3>
-      <h2 data-i18n="b_proj">Proyectos y freelancing</h2>
-      <p data-i18n="proj_p">Encargos que no son clases ni conciertos. Cada proyecto tiene su forma de cobro. Los conciertos y ensayos de Músicos cuelgan de aquí.</p>
-    </div>
-    <div class="groups">
+<div class="vista" id="v-proyectos">
+  <nav class="topbar" aria-label="Guías"><a class="volver" href="#inicio" data-i18n="volver">← Elegir otra guía</a><span class="tabs"><a href="#clases" data-i18n="p_clases_h">Clases</a><a href="#conciertos" data-i18n="p_conc_h">Conciertos</a><a href="#proyectos" data-i18n="p_proj_h">Proyectos</a><a href="#todos" data-i18n="td_h">Para todos</a></span></nav>
+  <div class="branch-head proj"><h3 data-i18n="guia_k"></h3><h2 data-i18n="p_proj_h"></h2><p data-i18n="pr_lead"></p></div>
+  <section><h3 data-i18n="cl_s_k"></h3><h2 data-i18n="cl_s_h"></h2><div class="steps pasos"><article class="step"><span class="num">1<svg class="ring" aria-hidden="true" viewBox="0 0 200 80" preserveAspectRatio="none"><path d="M30 12 C90 -4 190 6 194 38 C198 70 110 82 50 74 C6 68 2 40 14 24 C24 12 60 6 96 8" filter="url(#trazo-a-mano)"/></svg></span><h2 data-i18n="pr_s1_h"></h2><p data-i18n="pr_s1_p"></p></article><article class="step"><span class="num">2<svg class="ring" aria-hidden="true" viewBox="0 0 200 80" preserveAspectRatio="none"><path d="M30 12 C90 -4 190 6 194 38 C198 70 110 82 50 74 C6 68 2 40 14 24 C24 12 60 6 96 8" filter="url(#trazo-a-mano)"/></svg></span><h2 data-i18n="pr_s2_h"></h2><p class="where" data-i18n="pr_s2_w"></p><p data-i18n="pr_s2_p"></p></article><article class="step"><span class="num">3<svg class="ring" aria-hidden="true" viewBox="0 0 200 80" preserveAspectRatio="none"><path d="M30 12 C90 -4 190 6 194 38 C198 70 110 82 50 74 C6 68 2 40 14 24 C24 12 60 6 96 8" filter="url(#trazo-a-mano)"/></svg></span><h2 data-i18n="pr_s3_h"></h2><p class="where" data-i18n="pr_s3_w"></p><p data-i18n="pr_s3_p"></p></article><article class="step"><span class="num">4<svg class="ring" aria-hidden="true" viewBox="0 0 200 80" preserveAspectRatio="none"><path d="M30 12 C90 -4 190 6 194 38 C198 70 110 82 50 74 C6 68 2 40 14 24 C24 12 60 6 96 8" filter="url(#trazo-a-mano)"/></svg></span><h2 data-i18n="pr_s4_h"></h2><p data-i18n="pr_s4_p"></p></article></div></section>
+  <section><h3 data-i18n="cl_all_k"></h3><h2 data-i18n="cl_all_h"></h2>
+        <div class="groups">
       <div class="group">
         <h3 data-i18n="g_pcobro">Proyectos: cómo se cobra</h3>
         <ul class="proj">
@@ -441,20 +369,82 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
       </div>
     </div>
   </section>
+</div>
 
-  <!-- COMPARTIDO -->
-  <section id="compartido">
-    <div class="branch-head shared">
-      <h3 data-i18n="rama4">Rama 4</h3>
-      <h2 data-i18n="b_shared">Compartido</h2>
-      <p data-i18n="sh_p">Lo que usan las dos partes: clientes, kilómetros, BTW, cobros, correos y ajustes.</p>
+<div class="vista" id="v-todos">
+  <nav class="topbar" aria-label="Guías"><a class="volver" href="#inicio" data-i18n="volver">← Elegir otra guía</a><span class="tabs"><a href="#clases" data-i18n="p_clases_h">Clases</a><a href="#conciertos" data-i18n="p_conc_h">Conciertos</a><a href="#proyectos" data-i18n="p_proj_h">Proyectos</a><a href="#todos" data-i18n="td_h">Para todos</a></span></nav>
+  <div class="branch-head shared"><h3 data-i18n="guia_k"></h3><h2 data-i18n="td_h"></h2><p data-i18n="td_lead"></p></div>
+    <section id="entrar">
+    <h3 data-i18n="ent_kicker">Antes de empezar</h3>
+    <h2 data-i18n="ent_h2">Entrar en la app</h2>
+    <div class="group">
+        <ul class="shared">
+          <li data-i18n="ent_1">Entras con tu correo: te llega un enlace de acceso. No hay contraseña.</li>
+          <li data-i18n="ent_2">Solo entran los correos de la lista de invitados. Si no te llega el enlace, escríbeme.</li>
+          <li data-i18n="ent_3">Para probar iDEAL: en <strong>Ajustes → Facturación</strong> pega tu clave de prueba de Mollie (la que empieza por <strong>test_</strong>).</li>
+        </ul>
+      </div>
+  </section>
+    <section id="rutina">
+    <h3 data-i18n="rut_kicker">Tu rutina</h3>
+    <h2 data-i18n="rut_h2">Media hora al mes</h2>
+    <p data-i18n="rut_p">No hace falta saber contabilidad. Con este ritmo, la administración te lleva unos 30 minutos al mes y nada se queda a medias.</p>
+    <div class="steps rutina">
+      <article class="step">
+        <p class="time" data-i18n="rut1_time">Cada gasto · 10 segundos</p>
+        <h2 data-i18n="rut1_h">Foto del ticket</h2>
+        <p class="where" data-i18n="rut1_where">Móvil → <b>+</b> → <b>Gasto</b></p>
+        <p data-i18n="rut1_p">Cuando pagas algo del trabajo, haz la foto del ticket en el momento. La app lo lee y lo guarda con su IVA. Nada de guardar papeles hasta final de trimestre.</p>
+      </article>
+      <article class="step">
+        <p class="time" data-i18n="rut2_time">Cada semana · 2 minutos</p>
+        <h2 data-i18n="rut2_h">La semana al día</h2>
+        <p class="where" data-i18n="rut2_where">Agenda → <b>Generar clases</b></p>
+        <p data-i18n="rut2_p">Mira el horario fijo: un alumno nuevo, uno que lo deja, un cambio de hora. Después genera las clases. Durante la semana solo marcas lo raro: ausencias y recuperaciones.</p>
+      </article>
+      <article class="step">
+        <p class="time" data-i18n="rut3_time">Una vez al mes · 15 minutos</p>
+        <h2 data-i18n="rut3_h">El día de facturar</h2>
+        <p class="where" data-i18n="rut3_where">Finanzas → <b>Banco y Mollie</b>, y Facturas</p>
+        <ul class="rut-list">
+          <li data-i18n="rut3_1"><strong>Sube el CSV del banco.</strong> Cada cobro se casa con su factura, que queda pagada con la fecha real, y cada pago con su gasto. Lo seguro se confirma de un clic; solo revisas lo que no encaja.</li>
+          <li data-i18n="rut3_2"><strong>Facturar el mes.</strong> Un clic saca un borrador por pagador con las clases del mes. Échales un vistazo.</li>
+          <li data-i18n="rut3_3"><strong>Envíalos todos.</strong> Selecciónalos en Facturas y mándalos por email a la vez.</li>
+          <li data-i18n="rut3_4"><strong>Las que no han pagado:</strong> filtra por «Vencidas» y pulsa «Enviar recordatorio» para todas.</li>
+        </ul>
+      </article>
+      <article class="step">
+        <p class="time" data-i18n="rut4_time">Cada trimestre y cada año</p>
+        <h2 data-i18n="rut4_h">Impuestos sin sustos</h2>
+        <p class="where" data-i18n="rut4_where">Finanzas → <b>BTW trimestral</b> · <b>Declaración anual</b></p>
+        <p data-i18n="rut4_p">Como todo está al día, la declaración de BTW ya está hecha: solo copias las casillas en la web de la Belastingdienst. Una vez al año, la declaración anual junta las cifras del año.</p>
+      </article>
     </div>
-    <div class="groups">
+    <p class="rut-total" data-i18n="rut_total">En total: unos 25 minutos al mes, más las fotos de los tickets. Lo que te ahorras es mirar la app del banco y marcar factura por factura a mano.</p>
+  </section>
+    <section id="probar">
+    <h3 data-i18n="probar_kicker">Por dónde empezar</h3>
+    <h2 data-i18n="probar_h2">Qué probar primero</h2>
+    <div class="group">
+        <ul class="prof">
+          <li data-i18n="probar_1">Crea un alumno con su horario fijo.</li>
+          <li data-i18n="probar_2">Genera las clases del mes y mueve una.</li>
+          <li data-i18n="probar_3">Crea la factura del mes y pon tu propio correo como pagador para recibirla.</li>
+          <li data-i18n="probar_4">Mira el portal de familias: qué ve una familia de sus clases y facturas.</li>
+          <li data-i18n="probar_5">Cronometra una hora en el móvil.</li>
+          <li data-i18n="probar_6">Pega un mensaje con un concierto y revisa lo que la app entiende.</li>
+          <li data-i18n="probar_7">Haz una factura de abono de una factura de prueba.</li>
+        </ul>
+      </div>
+  </section>
+  <section><h3 data-i18n="cl_all_k"></h3><h2 data-i18n="b_shared"></h2>
+        <div class="groups">
       <div class="group">
         <h3 data-i18n="g_crm">Clientes (CRM)</h3>
         <p data-i18n="crm_p">Todos son clientes: quién paga.</p>
         <ul class="shared">
           <li data-i18n="crm1"><strong>Con alumnos</strong>: el padre o la madre que paga, con uno o más alumnos enlazados. Del alumno: nombre, fecha de nacimiento y curso. Y cómo se organizan sus clases (horario y paquete)</li>
+          <li data-i18n="crm3"></li>
           <li data-i18n="crm2"><strong>De proyectos</strong>: la empresa o persona que te encarga, con sus proyectos y sus datos de factura: dirección, IVA y número de BTW</li>
         </ul>
       </div>
@@ -495,9 +485,7 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
       </div>
     </div>
   </section>
-
-  <!-- RESUMEN -->
-  <section id="resumen">
+    <section id="resumen">
     <h3 data-i18n="sum_kicker">Resumen</h3>
     <h2 data-i18n="sum_h2">Lo que ya funciona en la beta</h2>
     <div class="group">
@@ -513,32 +501,27 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
           <li data-i18n="e9">Clientes con alumnos y clientes de proyectos.</li>
           <li data-i18n="e10">BTW trimestral y cifras del año.</li>
           <li data-i18n="e11">Calendario con Google y enlace .ics.</li>
-          <li data-i18n="m_3">Pasar una prueba a horario fijo.</li>
+          <li data-i18n="e12"></li><li data-i18n="e13"></li><li data-i18n="e14"></li><li data-i18n="e15"></li><li data-i18n="e16"></li><li data-i18n="e17"></li><li data-i18n="m_3">Pasar una prueba a horario fijo.</li>
           <li data-i18n="m_5">Un alumno que también es cliente, con un solo alta.</li>
           <li data-i18n="m_6">Aviso a la escuela cuando se factura el mes de su sede.</li>
           <li data-i18n="m_8">Descargar todos tus datos en un ZIP.</li>
         </ul>
       </div>
   </section>
-
-  <!-- MEJORAS -->
-  <section id="mejoras">
+    <section id="mejoras">
     <h3 data-i18n="later_kicker">Después</h3>
     <h2 data-i18n="later_h2">Mejoras que vienen después</h2>
     <div class="group">
         <ul class="mus">
           <li data-i18n="m_1">Ocultar las ramas que no usas (Qué ves).</li>
           <li data-i18n="m_2">Importar las clases que ya diste antes de usar Jizai.</li>
-          <li data-i18n="m_4">Clases sueltas al final del curso.</li>
           <li data-i18n="m_7">Dominio propio para los correos.</li>
           <li data-i18n="m_9">Importar desde Moneybird, e-Boekhouden y otros programas.</li>
           <li data-i18n="m_10">Conectar Mollie con un clic, sin pegar la clave.</li>
         </ul>
       </div>
   </section>
-
-  <!-- LIMITES -->
-  <section id="limites">
+    <section id="limites">
     <h3 data-i18n="lim_kicker">Ya sé que falla</h3>
     <h2 data-i18n="lim_h2">Cosas que ya sé que fallan</h2>
     <div class="group">
@@ -548,9 +531,7 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
         </ul>
       </div>
   </section>
-
-  <!-- PRIVACIDAD -->
-  <section id="privacidad">
+    <section id="privacidad">
     <h3 data-i18n="priv_kicker">Privacidad</h3>
     <h2 data-i18n="priv_h2">Tus datos</h2>
     <div class="group">
@@ -562,14 +543,14 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
         </ul>
       </div>
   </section>
-
-  <div class="ask">
+</div>
+  </main>
+    <div class="ask">
     <strong data-i18n="fb_h">Cómo avisarme</strong>
-    <p data-i18n="fb_p1">Escríbeme por WhatsApp: <strong>[tu número]</strong>.</p>
+    <p data-i18n="fb_p1">Escríbeme por WhatsApp: <strong><a href="https://wa.me/31617386997">+31 6 17 38 69 97</a></strong>.</p>
     <p data-i18n="fb_p2">Mándame un audio con capturas de pantalla y cuéntame en tus palabras qué querías hacer, qué pasó y qué cambiarías. No hace falta que lo digas bien.</p>
   </div>
-
-  <footer data-i18n="footer">Guía de Jizai para quien prueba la app. Solo recoge lo que ya funciona.</footer>
+    <footer data-i18n="footer">Guía de Jizai para quien prueba la app. Solo recoge lo que ya funciona.</footer>
 </div>
 
 <script>
@@ -650,11 +631,11 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
       priv_3: "Si quieres dejar de usar la app o borrar tus datos, escríbeme y lo hacemos.",
       priv_4: "La política de privacidad completa está en la página de privacidad de la app.",
       fb_h: "Cómo avisarme",
-      fb_p1: "Escríbeme por WhatsApp: <strong>[tu número]</strong>.",
+      fb_p1: "Escríbeme por WhatsApp: <strong><a href=\"https://wa.me/31617386997\">+31 6 17 38 69 97</a></strong>.",
       fb_p2: "Mándame un audio con capturas de pantalla y cuéntame en tus palabras qué querías hacer, qué pasó y qué cambiarías. No hace falta que lo digas bien.",
       title: "Guía de Jizai", lang_label: "Idioma",
       h_title: "Guía de <span>Jizai</span>",
-      h_lead: "Para quien prueba la app. Aquí está lo que ya funciona, qué hace cada parte y cómo empezar. El mapa de abajo te enseña dónde está cada cosa.",
+      h_lead: "Para quien prueba la app. Elige abajo para qué vas a usarla y te llevo paso a paso, con lo que ya funciona.",
       s_kicker: "Primeros pasos", s_h2: "Empieza en tres pasos",
       s_p: "Con estos tres pasos tienes el ciclo entero: un alumno, sus clases del mes y la factura enviada.",
       st1_h: "Crear un alumno", st1_where: "Alumnos → <b>Nuevo alumno</b>",
@@ -747,7 +728,115 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
       aj2: "Tu calendario con <strong>Google</strong>, y el enlace <strong>.ics</strong> para cualquier otro calendario",
       ask_h: "¿Algo no está donde esperabas?",
       ask_p: "Dilo tal cual lo viste: qué querías hacer, en qué pantalla estabas y qué pasó. Eso ayuda más que una descripción general.",
-      footer: "Guía de Jizai para quien prueba la app. Solo recoge lo que ya funciona."
+      footer: "Guía de Jizai para quien prueba la app. Solo recoge lo que ya funciona.",
+      guia_k: "Guía",
+      volver: "← Elegir otra guía",
+      abrir: "Abrir la guía →",
+      p_ask_kicker: "Empieza aquí",
+      p_ask_h2: "¿Para qué vas a usar Jizai?",
+      p_ask_p: "Elige una guía. Puedes abrir otra cuando quieras: siempre tienes el botón de volver.",
+      p_clases_h: "Clases",
+      p_clases_p: "Alumnos, familias y escuelas, horarios, grupos y la factura del mes.",
+      p_conc_h: "Conciertos",
+      p_conc_p: "Bolos y ensayos con su cachet y su viaje, importarlos desde un mensaje y facturarlos.",
+      p_proj_h: "Proyectos",
+      p_proj_p: "Encargos por horas o a precio cerrado, facturas sueltas y gastos.",
+      p_todos_a: "Lo de todos: entrar, tu rutina del mes, clientes, BTW, correos y ajustes →",
+      td_h: "Para todos",
+      td_lead: "Lo que usan las tres guías: entrar, tu rutina, clientes, finanzas, correos y ajustes.",
+      cl_lead: "Lo que te ahorra tiempo cada semana y cada mes es dejar bien puesto al principio quién es quién. Sigue estos pasos en orden.",
+      cl_q_k: "Lo primero",
+      cl_q_h: "¿Quién recibe la factura?",
+      cl_q_p: "Todo cliente es a quien le haces la factura. Según quién pague, hay tres casos:",
+      cl_t1_h: "Familia o alumno",
+      cl_t1_p: "Pagan los padres (o el propio alumno adulto). Creas el cliente y dentro, sus alumnos.",
+      cl_t2_h: "Escuela que paga las clases",
+      cl_t2_p: "La escuela es el cliente. De ella cuelgan sus sedes y, en cada sede, sus alumnos. No necesitas datos de los padres.",
+      cl_t3_h: "Escuela donde pagan los padres",
+      cl_t3_p: "La escuela no es un cliente: es solo una sede, el sitio donde das clase. Cada familia sigue siendo su cliente, con su alumno en esa sede.",
+      cl_s_k: "Paso a paso",
+      cl_s_h: "Cómo dejarlo bien puesto",
+      cl_s1_h: "Tus sedes",
+      cl_s1_w: "Ajustes → <b>Paquetes y sedes</b>",
+      cl_s1_p: "Una sede es donde das clase: tu casa, una escuela, online. Si la sede pertenece a una escuela que paga, la enlazas con ella y se guarda como «sede - escuela» (Den Haag - Escuela Americana): así dos escuelas pueden tener cada una su Den Haag.",
+      cl_s2_h: "Tus precios",
+      cl_s2_p: "Un paquete o curso con su precio mensual, y las tarifas por hora de la sede y de cada cliente. Para un alumno concreto puedes poner su propio precio en su ficha: ese manda sobre todos los demás.",
+      cl_s3_h: "Tus clientes y alumnos",
+      cl_s3_w: "Clientes → <b>Nuevo cliente</b>",
+      cl_s3_p: "Elige el tipo: alumno o familia, escuela, o cliente sin clases. Una escuela, al crearla, te lleva a su ficha para añadir sus sedes y, en cada una, sus alumnos, cada uno con su sede.",
+      cl_s4_h: "Horario fijo",
+      cl_s4_w: "Agenda → <b>Horario fijo</b> → Añadir al horario",
+      cl_s4_p: "Día, hora, sede y paquete de cada alumno. Al elegir al alumno, su sede sale ya puesta.",
+      cl_s5_h: "Grupos",
+      cl_s5_w: "Agenda → <b>Horario fijo</b> → Nuevo grupo",
+      cl_s5_p: "Un grupo tiene nombre, sede, día y hora. Luego añades a sus alumnos, uno a uno, y cada uno sigue con su cliente. Hay dos maneras de cobrarlo:",
+      cl_g1: "<strong>Cada alumno paga su clase</strong>, para las privadas: cada familia recibe su factura, con el precio del curso o con el «precio por clase de grupo» que pongas en la ficha del alumno.",
+      cl_g2: "<strong>Un precio por clase de grupo</strong>, para escuelas: eliges «Se factura a» la escuela y recibe una línea por grupo (4 clases × 85 €), sean cuantos sean los alumnos. No se reparte entre ellos.",
+      cl_s5_n: "Un grupo se pliega en el horario para que no ocupe tanto: pulsa su nombre para ver a sus alumnos.",
+      cl_s6_h: "Generar las clases",
+      cl_s6_p: "Te pregunta primero si quieres una semana o un mes, y luego cuál (esta o la próxima). Las vacaciones y festivos se saltan solos.",
+      cl_s7_h: "Facturar el mes",
+      cl_s7_w: "Facturas → <b>Facturar el mes</b>",
+      cl_s7_p: "Un borrador por pagador, con el IVA de cada línea. Si el mes no tiene clases ni eventos, la app te lo dice y te manda al calendario.",
+      cl_f_k: "Qué sale en la factura",
+      cl_f_h: "Según el caso",
+      cl_f1: "Una <strong>familia</strong>: una factura, con una línea por alumno y curso.",
+      cl_f2: "Una <strong>escuela con varias sedes</strong>: una sola factura, con las líneas ordenadas por sede.",
+      cl_f3: "<strong>Grupos con precio por clase</strong>: una línea por grupo, a la escuela.",
+      cl_f4: "Un curso que empieza <strong>después del día 15</strong> se factura desde el mes siguiente; sus primeras clases se cobran al acabar el curso, en una línea aparte.",
+      cl_f5: "El <strong>precio del alumno</strong> (en su ficha) manda sobre el de la sede, el del cliente y el de tu cuenta.",
+      cl_c_k: "Cada día",
+      cl_c_h: "Tu calendario",
+      cl_c1: "<strong>Semana o mes</strong>: cambias de vista arriba a la derecha. Cada sede tiene su color.",
+      cl_c2: "Al abrir la semana actual, el calendario se coloca en la hora de ahora.",
+      cl_c3: "Pulsa una clase para <strong>cancelarla</strong>, marcar un no-show o escribir una <strong>nota para la familia</strong>.",
+      cl_c4: "Las clases de un grupo salen como un solo chip («Piano groep · 3»); al pulsarlo ves a cada alumno.",
+      cl_i_k: "Si ya tienes datos",
+      cl_i_h: "Importar lo que ya tienes",
+      cl_i1: "Sube un <strong>CSV o un Excel</strong> de tus clientes, facturas o gastos. Antes de guardar nada, ves lo que va a entrar.",
+      cl_i2: "Si tu programa da otro formato, el enlace bajo el cajetín del archivo te explica cómo pedirle a tu asistente de IA que lo convierta en un CSV.",
+      cl_ex_k: "Un ejemplo",
+      cl_ex_h: "Una escuela con dos sedes",
+      cl_ex_p: "Muziekschool Pepine te contrata en Rotterdam y en Ámsterdam, y le facturas a ella.",
+      cl_ex1: "Clientes → Nuevo cliente → <strong>Escuela</strong>, «Muziekschool Pepine».",
+      cl_ex2: "En su ficha, crea las sedes <strong>Rotterdam</strong> y <strong>Ámsterdam</strong>: quedan como «Rotterdam - Muziekschool Pepine»…",
+      cl_ex3: "Añade a cada alumno con su sede, y dales su horario fijo.",
+      cl_ex4: "Crea un <strong>grupo</strong> en cada sede con «un precio por clase» y «Se factura a» Pepine.",
+      cl_ex5: "Genera las clases y, a fin de mes, <strong>Facturar el mes</strong>: una factura para Pepine, con una línea por sede.",
+      cl_all_k: "Todo lo que tienes",
+      cl_all_h: "Las funciones de clases, una a una",
+      cn_lead: "Tus bolos y ensayos, con su cachet y su viaje, hasta la factura.",
+      cn_s1_h: "Tu cliente",
+      cn_s1_w: "Clientes → <b>Nuevo cliente</b> → Cliente sin clases",
+      cn_s1_p: "Una sala, una orquesta o una empresa: a quien le haces la factura.",
+      cn_s2_h: "Tus conciertos",
+      cn_s2_w: "Proyectos → <b>Nuevo proyecto</b> → Por concierto",
+      cn_s2_p: "Un proyecto con el cachet de cada concierto y el de cada ensayo.",
+      cn_s3_h: "Importar desde un mensaje",
+      cn_s3_w: "Proyectos → <b>Importar</b>",
+      cn_s3_p: "Pegas un email, un WhatsApp o una captura, y la app lee fechas, horas y lugares. Revisas antes de guardar.",
+      cn_s4_h: "Facturar",
+      cn_s4_w: "Proyectos → el proyecto → <b>Facturar</b>",
+      cn_s4_p: "Conciertos, ensayos y kilómetros en una sola factura, al final del mes o del proyecto.",
+      pr_lead: "Encargos que no son clases ni conciertos: cada uno con su forma de cobro.",
+      pr_s1_h: "Tu cliente",
+      pr_s1_p: "Quien te hace el encargo: lo creas como cliente sin clases.",
+      pr_s2_h: "Tu proyecto",
+      pr_s2_w: "Proyectos → <b>Nuevo proyecto</b>",
+      pr_s2_p: "Elige cómo se cobra: por horas, precio cerrado, presupuesto de horas o interno.",
+      pr_s3_h: "Apunta tus horas",
+      pr_s3_w: "Cronómetro del móvil · Proyectos → <b>Horas</b>",
+      pr_s3_p: "Cronometra al empezar y parar, o apunta horas sueltas a mano.",
+      pr_s4_h: "Factura",
+      pr_s4_p: "Una factura del proyecto, o una suelta; y haz foto de tus gastos para que la app los lea.",
+      crm_p: "Todos son clientes: quién recibe la factura. Hay tres tipos.",
+      crm3: "<strong>Escuela</strong>: paga las clases de sus alumnos. Tiene sus sedes y, en cada sede, sus alumnos; sin datos de padres",
+      e12: "Vista mensual del calendario, y la semana colocada en la hora de ahora.",
+      e13: "Escuelas con sus sedes, y alumnos con sede propia.",
+      e14: "Clases en grupo, cobradas por alumno o por clase a una escuela.",
+      e15: "Precio propio de cada alumno, por clase de grupo y por hora.",
+      e16: "Las clases del inicio de curso, facturadas al acabar el curso.",
+      e17: "Ayuda para convertir archivos de otros programas a CSV.",
     },
     en: {
       ent_kicker: "Before you start",
@@ -823,11 +912,11 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
       priv_3: "If you want to stop using the app or delete your data, message me and we'll do it.",
       priv_4: "The full privacy policy is on the app's privacy page.",
       fb_h: "How to reach me",
-      fb_p1: "Message me on WhatsApp: <strong>[your number]</strong>.",
+      fb_p1: "Message me on WhatsApp: <strong><a href=\"https://wa.me/31617386997\">+31 6 17 38 69 97</a></strong>.",
       fb_p2: "Send me a voice note with screenshots and tell me in your own words what you wanted to do, what happened and what you would change. It doesn't have to be polished.",
       title: "Jizai guide", lang_label: "Language",
       h_title: "Jizai <span>guide</span>",
-      h_lead: "For anyone testing the app. Here is what already works, what each part does and how to start. The map below shows where everything is.",
+      h_lead: "For anyone trying the app. Choose below what you will use it for and I will take you step by step, with what already works.",
       s_kicker: "First steps", s_h2: "Start in three steps",
       s_p: "With these three steps you go through the whole cycle: a student, their lessons for the month and the invoice sent.",
       st1_h: "Create a student", st1_where: "Students → <b>New student</b>",
@@ -920,7 +1009,115 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
       aj2: "Your <strong>Google</strong> calendar, and the <strong>.ics</strong> link for any other calendar",
       ask_h: "Something not where you expected?",
       ask_p: "Tell it the way you saw it: what you wanted to do, which screen you were on and what happened. That helps more than a general description.",
-      footer: "Jizai guide for anyone testing the app. It only covers what already works."
+      footer: "Jizai guide for anyone testing the app. It only covers what already works.",
+      guia_k: "Guide",
+      volver: "← Pick another guide",
+      abrir: "Open the guide →",
+      p_ask_kicker: "Start here",
+      p_ask_h2: "What will you use Jizai for?",
+      p_ask_p: "Pick a guide. You can open another whenever you like: the back button is always there.",
+      p_clases_h: "Lessons",
+      p_clases_p: "Students, families and schools, schedules, groups and the monthly invoice.",
+      p_conc_h: "Concerts",
+      p_conc_p: "Gigs and rehearsals with their fee and travel, importing them from a message and invoicing them.",
+      p_proj_h: "Projects",
+      p_proj_p: "Jobs by the hour or at a fixed price, one-off invoices and expenses.",
+      p_todos_a: "For everyone: signing in, your monthly routine, clients, VAT, emails and settings →",
+      td_h: "For everyone",
+      td_lead: "What the three guides share: signing in, your routine, clients, finance, emails and settings.",
+      cl_lead: "What saves you time every week and every month is setting up who is who from the start. Follow these steps in order.",
+      cl_q_k: "First of all",
+      cl_q_h: "Who receives the invoice?",
+      cl_q_p: "Every client is the one you invoice. Depending on who pays, there are three cases:",
+      cl_t1_h: "Family or student",
+      cl_t1_p: "The parents pay (or the adult student). You create the client and, inside it, their students.",
+      cl_t2_h: "School that pays for the lessons",
+      cl_t2_p: "The school is the client. Its sites hang from it and, at each site, its students. You do not need the parents' details.",
+      cl_t3_h: "School where the parents pay",
+      cl_t3_p: "The school is not a client: it is just a site, the place where you teach. Each family stays its own client, with its student at that site.",
+      cl_s_k: "Step by step",
+      cl_s_h: "How to set it up",
+      cl_s1_h: "Your sites",
+      cl_s1_w: "Settings → <b>Packages and sites</b>",
+      cl_s1_p: "A site is where you teach: your home, a school, online. If the site belongs to a school that pays, you link it to the school and it is saved as “site - school” (Den Haag - American School): so two schools can each have their own Den Haag.",
+      cl_s2_h: "Your prices",
+      cl_s2_p: "A package or course with its monthly price, and the hourly rates of the site and of each client. For a particular student you can set their own price on their card: it takes precedence over all the others.",
+      cl_s3_h: "Your clients and students",
+      cl_s3_w: "Clients → <b>New client</b>",
+      cl_s3_p: "Pick the type: student or family, school, or client without lessons. A school, once created, takes you to its page to add its sites and, at each one, its students, each with their site.",
+      cl_s4_h: "Fixed schedule",
+      cl_s4_w: "Calendar → <b>Fixed schedule</b> → Add to timetable",
+      cl_s4_p: "Day, time, site and package of each student. When you pick the student, their site is already filled in.",
+      cl_s5_h: "Groups",
+      cl_s5_w: "Calendar → <b>Fixed schedule</b> → New group",
+      cl_s5_p: "A group has a name, site, day and time. Then you add its students one by one, and each keeps their own client. There are two ways to charge it:",
+      cl_g1: "<strong>Each student pays for their class</strong>, for private groups: each family gets its own invoice, with the course price or with the “price per group class” you set on the student's card.",
+      cl_g2: "<strong>One price per group class</strong>, for schools: you choose “Invoiced to” the school and it gets one line per group (4 classes × €85), however many students there are. It is not split between them.",
+      cl_s5_n: "A group folds in the schedule so it does not take so much room: press its name to see its students.",
+      cl_s6_h: "Generate the lessons",
+      cl_s6_p: "It first asks whether you want a week or a month, then which one (this or next). Holidays are skipped on their own.",
+      cl_s7_h: "Invoice the month",
+      cl_s7_w: "Invoices → <b>Invoice the month</b>",
+      cl_s7_p: "A draft per payer, with the VAT of each line. If the month has no lessons or events, the app tells you and sends you to the calendar.",
+      cl_f_k: "What the invoice shows",
+      cl_f_h: "Depending on the case",
+      cl_f1: "A <strong>family</strong>: one invoice, with a line per student and course.",
+      cl_f2: "A <strong>school with several sites</strong>: a single invoice, with the lines ordered by site.",
+      cl_f3: "<strong>Groups with a price per class</strong>: one line per group, to the school.",
+      cl_f4: "A course that starts <strong>after the 15th</strong> is billed from the next month; its first lessons are charged when the course ends, on a separate line.",
+      cl_f5: "The <strong>student's price</strong> (on their card) takes precedence over the site's, the client's and your account's.",
+      cl_c_k: "Every day",
+      cl_c_h: "Your calendar",
+      cl_c1: "<strong>Week or month</strong>: you switch the view at the top right. Each site has its own colour.",
+      cl_c2: "When you open the current week, the calendar scrolls to the current time.",
+      cl_c3: "Press a lesson to <strong>cancel it</strong>, mark a no-show or write a <strong>note for the family</strong>.",
+      cl_c4: "The lessons of a group appear as a single chip (“Piano group · 3”); press it to see each student.",
+      cl_i_k: "If you already have data",
+      cl_i_h: "Import what you already have",
+      cl_i1: "Upload a <strong>CSV or Excel</strong> of your clients, invoices or expenses. Before anything is saved, you see what will come in.",
+      cl_i2: "If your program gives another format, the link under the file box explains how to ask your AI assistant to turn it into a CSV.",
+      cl_ex_k: "An example",
+      cl_ex_h: "A school with two sites",
+      cl_ex_p: "Muziekschool Pepine hires you in Rotterdam and in Amsterdam, and you invoice the school.",
+      cl_ex1: "Clients → New client → <strong>School</strong>, “Muziekschool Pepine”.",
+      cl_ex2: "On its page, create the sites <strong>Rotterdam</strong> and <strong>Amsterdam</strong>: they are saved as “Rotterdam - Muziekschool Pepine”…",
+      cl_ex3: "Add each student with their site, and give them their fixed schedule.",
+      cl_ex4: "Create a <strong>group</strong> at each site with “one price per class” and “Invoiced to” Pepine.",
+      cl_ex5: "Generate the lessons and, at the end of the month, <strong>Invoice the month</strong>: one invoice for Pepine, with a line per site.",
+      cl_all_k: "Everything you have",
+      cl_all_h: "The lessons features, one by one",
+      cn_lead: "Your gigs and rehearsals, with their fee and travel, all the way to the invoice.",
+      cn_s1_h: "Your client",
+      cn_s1_w: "Clients → <b>New client</b> → Client without lessons",
+      cn_s1_p: "A venue, an orchestra or a company: the one you invoice.",
+      cn_s2_h: "Your concerts",
+      cn_s2_w: "Projects → <b>New project</b> → Per concert",
+      cn_s2_p: "A project with the fee of each concert and each rehearsal.",
+      cn_s3_h: "Import from a message",
+      cn_s3_w: "Projects → <b>Import</b>",
+      cn_s3_p: "You paste an email, a WhatsApp message or a screenshot, and the app reads dates, times and places. You check before saving.",
+      cn_s4_h: "Invoice",
+      cn_s4_w: "Projects → the project → <b>Invoice</b>",
+      cn_s4_p: "Concerts, rehearsals and kilometres in a single invoice, at the end of the month or of the project.",
+      pr_lead: "Jobs that are neither lessons nor concerts: each with its own way of charging.",
+      pr_s1_h: "Your client",
+      pr_s1_p: "Whoever hires you: you create them as a client without lessons.",
+      pr_s2_h: "Your project",
+      pr_s2_w: "Projects → <b>New project</b>",
+      pr_s2_p: "Choose how it is charged: by the hour, fixed price, hours budget or internal.",
+      pr_s3_h: "Log your hours",
+      pr_s3_w: "Phone timer · Projects → <b>Hours</b>",
+      pr_s3_p: "Time it when you start and stop, or log single hours by hand.",
+      pr_s4_h: "Invoice",
+      pr_s4_p: "A project invoice, or a one-off one; and take a photo of your expenses so the app reads them.",
+      crm_p: "Everyone is a client: who receives the invoice. There are three types.",
+      crm3: "<strong>School</strong>: pays for its students' lessons. It has its sites and, at each site, its students; no parents' details",
+      e12: "Month view of the calendar, and the week scrolled to the current time.",
+      e13: "Schools with their sites, and students with their own site.",
+      e14: "Group classes, charged per student or per class to a school.",
+      e15: "Each student's own price, per group class and per hour.",
+      e16: "The first lessons of a course, invoiced when the course ends.",
+      e17: "Help turning files from other programs into CSV.",
     },
     nl: {
       ent_kicker: "Voordat je begint",
@@ -996,11 +1193,11 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
       priv_3: "Wil je stoppen of je gegevens laten verwijderen, stuur me een bericht en we regelen het.",
       priv_4: "Het volledige privacybeleid staat op de privacypagina van de app.",
       fb_h: "Hoe je me bereikt",
-      fb_p1: "Stuur me een bericht op WhatsApp: <strong>[je nummer]</strong>.",
+      fb_p1: "Stuur me een bericht op WhatsApp: <strong><a href=\"https://wa.me/31617386997\">+31 6 17 38 69 97</a></strong>.",
       fb_p2: "Stuur me een spraakbericht met screenshots en vertel in je eigen woorden wat je wilde doen, wat er gebeurde en wat je zou veranderen. Het hoeft niet netjes.",
       title: "Gids voor Jizai", lang_label: "Taal",
       h_title: "Gids voor <span>Jizai</span>",
-      h_lead: "Voor wie de app uitprobeert. Hier staat wat al werkt, wat elk onderdeel doet en hoe je begint. De kaart hieronder laat zien waar alles staat.",
+      h_lead: "Voor wie de app uitprobeert. Kies hieronder waarvoor je haar gaat gebruiken en ik neem je stap voor stap mee, met wat al werkt.",
       s_kicker: "Eerste stappen", s_h2: "Begin in drie stappen",
       s_p: "Met deze drie stappen doorloop je de hele cyclus: een leerling, de lessen van de maand en de verzonden factuur.",
       st1_h: "Een leerling aanmaken", st1_where: "Leerlingen → <b>Nieuwe leerling</b>",
@@ -1093,7 +1290,115 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
       aj2: "Je <strong>Google</strong>-agenda, en de <strong>.ics</strong>-link voor elke andere agenda",
       ask_h: "Iets niet waar je het verwachtte?",
       ask_p: "Vertel het zoals je het zag: wat je wilde doen, op welk scherm je zat en wat er gebeurde. Dat helpt meer dan een algemene beschrijving.",
-      footer: "Gids voor Jizai voor wie de app uitprobeert. Bevat alleen wat al werkt."
+      footer: "Gids voor Jizai voor wie de app uitprobeert. Bevat alleen wat al werkt.",
+      guia_k: "Gids",
+      volver: "← Kies een andere gids",
+      abrir: "Open de gids →",
+      p_ask_kicker: "Begin hier",
+      p_ask_h2: "Waarvoor ga je Jizai gebruiken?",
+      p_ask_p: "Kies een gids. Je kunt altijd een andere openen: de knop om terug te gaan is er altijd.",
+      p_clases_h: "Lessen",
+      p_clases_p: "Leerlingen, gezinnen en scholen, roosters, groepen en de maandfactuur.",
+      p_conc_h: "Concerten",
+      p_conc_p: "Optredens en repetities met gage en reiskosten, importeren uit een bericht en factureren.",
+      p_proj_h: "Projecten",
+      p_proj_p: "Opdrachten per uur of voor een vaste prijs, losse facturen en uitgaven.",
+      p_todos_a: "Voor iedereen: inloggen, je maandroutine, klanten, btw, e-mails en instellingen →",
+      td_h: "Voor iedereen",
+      td_lead: "Wat alle drie de gidsen delen: inloggen, je routine, klanten, financiën, e-mails en instellingen.",
+      cl_lead: "Wat je elke week en maand tijd bespaart, is dat je vanaf het begin goed vastlegt wie wie is. Volg deze stappen op volgorde.",
+      cl_q_k: "Eerst",
+      cl_q_h: "Wie ontvangt de factuur?",
+      cl_q_p: "Elke klant is degene aan wie je factureert. Afhankelijk van wie betaalt zijn er drie gevallen:",
+      cl_t1_h: "Gezin of leerling",
+      cl_t1_p: "De ouders betalen (of de volwassen leerling zelf). Je maakt de klant aan en daarin zijn of haar leerlingen.",
+      cl_t2_h: "School die de lessen betaalt",
+      cl_t2_p: "De school is de klant. Eronder hangen haar locaties en, per locatie, haar leerlingen. Je hebt de gegevens van de ouders niet nodig.",
+      cl_t3_h: "School waar de ouders betalen",
+      cl_t3_p: "De school is geen klant: het is alleen een locatie, de plek waar je les geeft. Elk gezin blijft zijn eigen klant, met zijn leerling op die locatie.",
+      cl_s_k: "Stap voor stap",
+      cl_s_h: "Zo zet je het goed op",
+      cl_s1_h: "Je locaties",
+      cl_s1_w: "Instellingen → <b>Pakketten en locaties</b>",
+      cl_s1_p: "Een locatie is waar je les geeft: thuis, een school, online. Hoort de locatie bij een school die betaalt, dan koppel je haar aan de school en wordt ze opgeslagen als “locatie - school” (Den Haag - Amerikaanse School): zo kunnen twee scholen elk hun eigen Den Haag hebben.",
+      cl_s2_h: "Je prijzen",
+      cl_s2_p: "Een pakket of cursus met zijn maandprijs, en de uurtarieven van de locatie en van elke klant. Voor een bepaalde leerling kun je een eigen prijs op zijn kaart zetten: die gaat voor alle andere.",
+      cl_s3_h: "Je klanten en leerlingen",
+      cl_s3_w: "Klanten → <b>Nieuwe klant</b>",
+      cl_s3_p: "Kies het type: leerling of gezin, school, of klant zonder lessen. Een school brengt je na het aanmaken naar haar pagina om haar locaties toe te voegen en, bij elke locatie, haar leerlingen, elk met zijn locatie.",
+      cl_s4_h: "Vast rooster",
+      cl_s4_w: "Agenda → <b>Vast rooster</b> → Aan rooster toevoegen",
+      cl_s4_p: "Dag, tijd, locatie en pakket van elke leerling. Kies je de leerling, dan staat zijn locatie al ingevuld.",
+      cl_s5_h: "Groepen",
+      cl_s5_w: "Agenda → <b>Vast rooster</b> → Nieuwe groep",
+      cl_s5_p: "Een groep heeft een naam, locatie, dag en tijd. Daarna voeg je de leerlingen één voor één toe, en elk behoudt zijn eigen klant. Er zijn twee manieren om te factureren:",
+      cl_g1: "<strong>Elke leerling betaalt zijn les</strong>, voor particuliere groepen: elk gezin krijgt zijn eigen factuur, met de cursusprijs of met de “prijs per groepsles” die je op de kaart van de leerling zet.",
+      cl_g2: "<strong>Eén prijs per groepsles</strong>, voor scholen: je kiest “Gefactureerd aan” de school en die krijgt één regel per groep (4 lessen × € 85), hoeveel leerlingen er ook zijn. Het wordt niet over hen verdeeld.",
+      cl_s5_n: "Een groep klapt dicht in het rooster zodat hij minder ruimte inneemt: klik op de naam om de leerlingen te zien.",
+      cl_s6_h: "De lessen genereren",
+      cl_s6_p: "Eerst vraagt het of je een week of een maand wilt, en dan welke (deze of volgende). Vakanties en feestdagen worden vanzelf overgeslagen.",
+      cl_s7_h: "De maand factureren",
+      cl_s7_w: "Facturen → <b>Maand factureren</b>",
+      cl_s7_p: "Een concept per betaler, met de btw van elke regel. Heeft de maand geen lessen of afspraken, dan zegt de app het en stuurt je naar de agenda.",
+      cl_f_k: "Wat er op de factuur staat",
+      cl_f_h: "Afhankelijk van het geval",
+      cl_f1: "Een <strong>gezin</strong>: één factuur, met een regel per leerling en cursus.",
+      cl_f2: "Een <strong>school met meerdere locaties</strong>: één factuur, met de regels per locatie gesorteerd.",
+      cl_f3: "<strong>Groepen met een prijs per les</strong>: één regel per groep, aan de school.",
+      cl_f4: "Een cursus die <strong>na de 15e</strong> begint, wordt vanaf de volgende maand gefactureerd; zijn eerste lessen worden bij het einde van de cursus op een aparte regel berekend.",
+      cl_f5: "De <strong>prijs van de leerling</strong> (op zijn kaart) gaat voor die van de locatie, de klant en je account.",
+      cl_c_k: "Elke dag",
+      cl_c_h: "Je agenda",
+      cl_c1: "<strong>Week of maand</strong>: je wisselt van weergave rechtsboven. Elke locatie heeft haar eigen kleur.",
+      cl_c2: "Als je de huidige week opent, scrolt de agenda naar het huidige tijdstip.",
+      cl_c3: "Klik op een les om haar te <strong>annuleren</strong>, een no-show te markeren of een <strong>notitie voor het gezin</strong> te schrijven.",
+      cl_c4: "De lessen van een groep verschijnen als één chip (“Pianogroep · 3”); klik erop om elke leerling te zien.",
+      cl_i_k: "Als je al gegevens hebt",
+      cl_i_h: "Importeer wat je al hebt",
+      cl_i1: "Upload een <strong>CSV of Excel</strong> van je klanten, facturen of uitgaven. Voordat er iets wordt opgeslagen, zie je wat er binnenkomt.",
+      cl_i2: "Geeft je programma een ander formaat, dan legt de link onder het bestandsvak uit hoe je je AI-assistent het in een CSV laat omzetten.",
+      cl_ex_k: "Een voorbeeld",
+      cl_ex_h: "Een school met twee locaties",
+      cl_ex_p: "Muziekschool Pepine huurt je in in Rotterdam en Amsterdam, en je factureert aan de school.",
+      cl_ex1: "Klanten → Nieuwe klant → <strong>School</strong>, “Muziekschool Pepine”.",
+      cl_ex2: "Maak op haar pagina de locaties <strong>Rotterdam</strong> en <strong>Amsterdam</strong> aan: ze worden opgeslagen als “Rotterdam - Muziekschool Pepine”…",
+      cl_ex3: "Voeg elke leerling toe met zijn locatie en geef hem zijn vaste rooster.",
+      cl_ex4: "Maak op elke locatie een <strong>groep</strong> met “één prijs per les” en “Gefactureerd aan” Pepine.",
+      cl_ex5: "Genereer de lessen en factureer aan het eind van de maand <strong>de maand</strong>: één factuur voor Pepine, met een regel per locatie.",
+      cl_all_k: "Alles wat je hebt",
+      cl_all_h: "De lesfuncties, één voor één",
+      cn_lead: "Je optredens en repetities, met gage en reiskosten, tot en met de factuur.",
+      cn_s1_h: "Je klant",
+      cn_s1_w: "Klanten → <b>Nieuwe klant</b> → Klant zonder lessen",
+      cn_s1_p: "Een zaal, een orkest of een bedrijf: degene aan wie je factureert.",
+      cn_s2_h: "Je concerten",
+      cn_s2_w: "Projecten → <b>Nieuw project</b> → Per concert",
+      cn_s2_p: "Een project met de gage van elk concert en elke repetitie.",
+      cn_s3_h: "Importeren uit een bericht",
+      cn_s3_w: "Projecten → <b>Importeren</b>",
+      cn_s3_p: "Je plakt een e-mail, een WhatsApp-bericht of een screenshot, en de app leest data, tijden en plaatsen. Je controleert voordat je opslaat.",
+      cn_s4_h: "Factureren",
+      cn_s4_w: "Projecten → het project → <b>Factureren</b>",
+      cn_s4_p: "Concerten, repetities en kilometers in één factuur, aan het einde van de maand of van het project.",
+      pr_lead: "Opdrachten die geen lessen of concerten zijn: elk met zijn eigen manier van factureren.",
+      pr_s1_h: "Je klant",
+      pr_s1_p: "Degene die je inhuurt: je maakt hem aan als klant zonder lessen.",
+      pr_s2_h: "Je project",
+      pr_s2_w: "Projecten → <b>Nieuw project</b>",
+      pr_s2_p: "Kies hoe er wordt gefactureerd: per uur, vaste prijs, urenbudget of intern.",
+      pr_s3_h: "Registreer je uren",
+      pr_s3_w: "Timer op je telefoon · Projecten → <b>Uren</b>",
+      pr_s3_p: "Start en stop de timer, of registreer losse uren met de hand.",
+      pr_s4_h: "Factuur",
+      pr_s4_p: "Een projectfactuur of een losse; en maak een foto van je uitgaven zodat de app ze leest.",
+      crm_p: "Iedereen is een klant: wie de factuur ontvangt. Er zijn drie typen.",
+      crm3: "<strong>School</strong>: betaalt de lessen van haar leerlingen. Ze heeft haar locaties en, per locatie, haar leerlingen; geen gegevens van ouders",
+      e12: "Maandweergave van de agenda, en de week op het huidige tijdstip.",
+      e13: "Scholen met hun locaties, en leerlingen met een eigen locatie.",
+      e14: "Groepslessen, per leerling of per les aan een school gefactureerd.",
+      e15: "Eigen prijs per leerling, per groepsles en per uur.",
+      e16: "De eerste lessen van een cursus, gefactureerd aan het einde van de cursus.",
+      e17: "Hulp om bestanden uit andere programma's om te zetten naar CSV.",
     },
     it: {
       ent_kicker: "Prima di iniziare",
@@ -1169,11 +1474,11 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
       priv_3: "Se vuoi smettere di usare l'app o cancellare i tuoi dati, scrivimi e lo facciamo.",
       priv_4: "L'informativa completa sulla privacy è nella pagina privacy dell'app.",
       fb_h: "Come scrivermi",
-      fb_p1: "Scrivimi su WhatsApp: <strong>[il tuo numero]</strong>.",
+      fb_p1: "Scrivimi su WhatsApp: <strong><a href=\"https://wa.me/31617386997\">+31 6 17 38 69 97</a></strong>.",
       fb_p2: "Mandami un vocale con gli screenshot e raccontami con parole tue cosa volevi fare, cosa è successo e cosa cambieresti. Non serve che sia perfetto.",
       title: "Guida a Jizai", lang_label: "Lingua",
       h_title: "Guida a <span>Jizai</span>",
-      h_lead: "Per chi prova l'app. Qui trovi cosa funziona già, cosa fa ogni parte e come iniziare. La mappa qui sotto mostra dove si trova ogni cosa.",
+      h_lead: "Per chi prova l'app. Scegli qui sotto per cosa la userai e ti guido passo dopo passo, con ciò che già funziona.",
       s_kicker: "Primi passi", s_h2: "Inizia in tre passi",
       s_p: "Con questi tre passi copri tutto il ciclo: un allievo, le sue lezioni del mese e la fattura inviata.",
       st1_h: "Creare un allievo", st1_where: "Allievi → <b>Nuovo allievo</b>",
@@ -1266,7 +1571,115 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
       aj2: "Il tuo calendario <strong>Google</strong>, e il link <strong>.ics</strong> per qualsiasi altro calendario",
       ask_h: "Qualcosa non dove te lo aspettavi?",
       ask_p: "Raccontalo come l'hai visto: cosa volevi fare, in quale schermata eri e cosa è successo. Aiuta più di una descrizione generale.",
-      footer: "Guida di Jizai per chi prova l'app. Riporta solo ciò che funziona già."
+      footer: "Guida di Jizai per chi prova l'app. Riporta solo ciò che funziona già.",
+      guia_k: "Guida",
+      volver: "← Scegli un'altra guida",
+      abrir: "Apri la guida →",
+      p_ask_kicker: "Inizia qui",
+      p_ask_h2: "Per cosa userai Jizai?",
+      p_ask_p: "Scegli una guida. Puoi aprirne un'altra quando vuoi: il pulsante per tornare indietro c'è sempre.",
+      p_clases_h: "Lezioni",
+      p_clases_p: "Allievi, famiglie e scuole, orari, gruppi e la fattura del mese.",
+      p_conc_h: "Concerti",
+      p_conc_p: "Concerti e prove con cachet e viaggio, importarli da un messaggio e fatturarli.",
+      p_proj_h: "Progetti",
+      p_proj_p: "Incarichi a ore o a prezzo fisso, fatture singole e spese.",
+      p_todos_a: "Per tutti: accesso, la tua routine del mese, clienti, IVA, email e impostazioni →",
+      td_h: "Per tutti",
+      td_lead: "Ciò che le tre guide hanno in comune: accesso, routine, clienti, finanze, email e impostazioni.",
+      cl_lead: "Ciò che ti fa risparmiare tempo ogni settimana e ogni mese è impostare bene all'inizio chi è chi. Segui questi passi in ordine.",
+      cl_q_k: "Prima di tutto",
+      cl_q_h: "Chi riceve la fattura?",
+      cl_q_p: "Ogni cliente è quello a cui fatturi. A seconda di chi paga, ci sono tre casi:",
+      cl_t1_h: "Famiglia o allievo",
+      cl_t1_p: "Pagano i genitori (o l'allievo adulto). Crei il cliente e, al suo interno, i suoi allievi.",
+      cl_t2_h: "Scuola che paga le lezioni",
+      cl_t2_p: "La scuola è il cliente. Da lei dipendono le sue sedi e, in ogni sede, i suoi allievi. Non servono i dati dei genitori.",
+      cl_t3_h: "Scuola dove pagano i genitori",
+      cl_t3_p: "La scuola non è un cliente: è solo una sede, il posto dove fai lezione. Ogni famiglia resta il proprio cliente, con il suo allievo in quella sede.",
+      cl_s_k: "Passo dopo passo",
+      cl_s_h: "Come impostarlo",
+      cl_s1_h: "Le tue sedi",
+      cl_s1_w: "Impostazioni → <b>Pacchetti e sedi</b>",
+      cl_s1_p: "Una sede è dove fai lezione: casa tua, una scuola, online. Se la sede appartiene a una scuola che paga, la colleghi alla scuola e viene salvata come «sede - scuola» (L'Aia - Scuola Americana): così due scuole possono avere ciascuna la propria L'Aia.",
+      cl_s2_h: "I tuoi prezzi",
+      cl_s2_p: "Un pacchetto o corso con il suo prezzo mensile e le tariffe orarie della sede e di ogni cliente. Per un allievo in particolare puoi mettere il suo prezzo sulla sua scheda: ha la precedenza su tutti gli altri.",
+      cl_s3_h: "I tuoi clienti e allievi",
+      cl_s3_w: "Clienti → <b>Nuovo cliente</b>",
+      cl_s3_p: "Scegli il tipo: allievo o famiglia, scuola, o cliente senza lezioni. Una scuola, una volta creata, ti porta alla sua scheda per aggiungere le sedi e, in ognuna, i suoi allievi, ciascuno con la sua sede.",
+      cl_s4_h: "Orario fisso",
+      cl_s4_w: "Agenda → <b>Orario fisso</b> → Aggiungi all'orario",
+      cl_s4_p: "Giorno, ora, sede e pacchetto di ogni allievo. Quando scegli l'allievo, la sua sede è già inserita.",
+      cl_s5_h: "Gruppi",
+      cl_s5_w: "Agenda → <b>Orario fisso</b> → Nuovo gruppo",
+      cl_s5_p: "Un gruppo ha un nome, una sede, un giorno e un'ora. Poi aggiungi gli allievi uno per uno, e ognuno resta con il proprio cliente. Ci sono due modi di farlo pagare:",
+      cl_g1: "<strong>Ogni allievo paga la sua lezione</strong>, per i gruppi privati: ogni famiglia riceve la sua fattura, con il prezzo del corso o con il «prezzo per lezione di gruppo» che metti nella scheda dell'allievo.",
+      cl_g2: "<strong>Un prezzo per lezione di gruppo</strong>, per le scuole: scegli «Fatturato a» la scuola e riceve una riga per gruppo (4 lezioni × 85 €), qualunque sia il numero di allievi. Non si divide tra di loro.",
+      cl_s5_n: "Un gruppo si ripiega nell'orario per occupare meno spazio: premi il suo nome per vedere gli allievi.",
+      cl_s6_h: "Generare le lezioni",
+      cl_s6_p: "Prima chiede se vuoi una settimana o un mese, poi quale (questa o la prossima). Le vacanze e i festivi si saltano da soli.",
+      cl_s7_h: "Fatturare il mese",
+      cl_s7_w: "Fatture → <b>Fattura il mese</b>",
+      cl_s7_p: "Una bozza per pagante, con l'IVA di ogni riga. Se il mese non ha lezioni né eventi, l'app te lo dice e ti manda al calendario.",
+      cl_f_k: "Cosa c'è in fattura",
+      cl_f_h: "A seconda del caso",
+      cl_f1: "Una <strong>famiglia</strong>: una fattura, con una riga per allievo e corso.",
+      cl_f2: "Una <strong>scuola con più sedi</strong>: una sola fattura, con le righe ordinate per sede.",
+      cl_f3: "<strong>Gruppi con prezzo per lezione</strong>: una riga per gruppo, alla scuola.",
+      cl_f4: "Un corso che inizia <strong>dopo il 15</strong> si fattura dal mese successivo; le prime lezioni si addebitano alla fine del corso, su una riga a parte.",
+      cl_f5: "Il <strong>prezzo dell'allievo</strong> (nella sua scheda) ha la precedenza su quello della sede, del cliente e del tuo account.",
+      cl_c_k: "Ogni giorno",
+      cl_c_h: "Il tuo calendario",
+      cl_c1: "<strong>Settimana o mese</strong>: cambi vista in alto a destra. Ogni sede ha il suo colore.",
+      cl_c2: "Quando apri la settimana corrente, il calendario si posiziona sull'ora attuale.",
+      cl_c3: "Premi una lezione per <strong>annullarla</strong>, segnare un no-show o scrivere una <strong>nota per la famiglia</strong>.",
+      cl_c4: "Le lezioni di un gruppo appaiono come un solo chip («Gruppo pianoforte · 3»); premendolo vedi ogni allievo.",
+      cl_i_k: "Se hai già dei dati",
+      cl_i_h: "Importa ciò che hai già",
+      cl_i1: "Carica un <strong>CSV o un Excel</strong> dei tuoi clienti, fatture o spese. Prima di salvare, vedi cosa entrerà.",
+      cl_i2: "Se il tuo programma dà un altro formato, il link sotto la casella del file spiega come chiedere al tuo assistente IA di convertirlo in CSV.",
+      cl_ex_k: "Un esempio",
+      cl_ex_h: "Una scuola con due sedi",
+      cl_ex_p: "La Muziekschool Pepine ti ingaggia a Rotterdam e ad Amsterdam, e fatturi alla scuola.",
+      cl_ex1: "Clienti → Nuovo cliente → <strong>Scuola</strong>, «Muziekschool Pepine».",
+      cl_ex2: "Nella sua scheda, crea le sedi <strong>Rotterdam</strong> e <strong>Amsterdam</strong>: vengono salvate come «Rotterdam - Muziekschool Pepine»…",
+      cl_ex3: "Aggiungi ogni allievo con la sua sede e dagli il suo orario fisso.",
+      cl_ex4: "Crea un <strong>gruppo</strong> in ogni sede con «un prezzo per lezione» e «Fatturato a» Pepine.",
+      cl_ex5: "Genera le lezioni e, a fine mese, <strong>Fattura il mese</strong>: una fattura per Pepine, con una riga per sede.",
+      cl_all_k: "Tutto ciò che hai",
+      cl_all_h: "Le funzioni delle lezioni, una per una",
+      cn_lead: "I tuoi concerti e prove, con cachet e viaggio, fino alla fattura.",
+      cn_s1_h: "Il tuo cliente",
+      cn_s1_w: "Clienti → <b>Nuovo cliente</b> → Cliente senza lezioni",
+      cn_s1_p: "Una sala, un'orchestra o un'azienda: quella a cui fatturi.",
+      cn_s2_h: "I tuoi concerti",
+      cn_s2_w: "Progetti → <b>Nuovo progetto</b> → Per concerto",
+      cn_s2_p: "Un progetto con il cachet di ogni concerto e di ogni prova.",
+      cn_s3_h: "Importare da un messaggio",
+      cn_s3_w: "Progetti → <b>Importa</b>",
+      cn_s3_p: "Incolli un'email, un messaggio WhatsApp o uno screenshot, e l'app legge date, orari e luoghi. Controlli prima di salvare.",
+      cn_s4_h: "Fatturare",
+      cn_s4_w: "Progetti → il progetto → <b>Fattura</b>",
+      cn_s4_p: "Concerti, prove e chilometri in un'unica fattura, a fine mese o del progetto.",
+      pr_lead: "Incarichi che non sono lezioni né concerti: ciascuno con il suo modo di farsi pagare.",
+      pr_s1_h: "Il tuo cliente",
+      pr_s1_p: "Chi ti fa l'incarico: lo crei come cliente senza lezioni.",
+      pr_s2_h: "Il tuo progetto",
+      pr_s2_w: "Progetti → <b>Nuovo progetto</b>",
+      pr_s2_p: "Scegli come si fa pagare: a ore, prezzo fisso, budget di ore o interno.",
+      pr_s3_h: "Registra le tue ore",
+      pr_s3_w: "Cronometro sul telefono · Progetti → <b>Ore</b>",
+      pr_s3_p: "Cronometra quando inizi e finisci, o registra ore singole a mano.",
+      pr_s4_h: "Fattura",
+      pr_s4_p: "Una fattura del progetto, o una singola; e fai una foto delle tue spese così l'app le legge.",
+      crm_p: "Tutti sono clienti: chi riceve la fattura. Ci sono tre tipi.",
+      crm3: "<strong>Scuola</strong>: paga le lezioni dei suoi allievi. Ha le sue sedi e, in ogni sede, i suoi allievi; senza dati dei genitori",
+      e12: "Vista mensile del calendario e la settimana posizionata sull'ora attuale.",
+      e13: "Scuole con le loro sedi e allievi con una sede propria.",
+      e14: "Lezioni di gruppo, addebitate per allievo o per lezione a una scuola.",
+      e15: "Prezzo proprio di ogni allievo, per lezione di gruppo e per ora.",
+      e16: "Le prime lezioni di un corso, fatturate alla fine del corso.",
+      e17: "Aiuto per convertire in CSV i file di altri programmi.",
     }
   };
 
@@ -1306,6 +1719,24 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
     b.addEventListener("click", function () { setLang(b.getAttribute("data-lang-btn")); });
   });
   setLang(startLang());
+  /* Vistas: la portada y una guía por vez; la ruta va en el # de la dirección, así el botón de atrás del navegador también vuelve */
+  var VISTAS = ["inicio", "clases", "conciertos", "proyectos", "todos"];
+  function mostrar() {
+    var h = (location.hash || "").replace("#", "");
+    if (VISTAS.indexOf(h) < 0) h = "inicio";
+    VISTAS.forEach(function (v) {
+      var el = document.getElementById("v-" + v);
+      if (el) el.classList.toggle("on", v === h);
+    });
+    document.querySelectorAll(".tabs a").forEach(function (a) {
+      a.removeAttribute("aria-current");
+      if (a.getAttribute("href") === "#" + h) a.setAttribute("aria-current", "page");
+    });
+    window.scrollTo(0, 0);
+  }
+  window.addEventListener("hashchange", mostrar);
+  mostrar();
+
 })();
 </script>
 </body>
